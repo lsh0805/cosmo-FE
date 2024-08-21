@@ -23,6 +23,9 @@ const TextInput: React.FC<TextInputProps> = ({
         selectionColor={theme.colors.primary}
         underlineColor={undefined}
         mode="outlined"
+        textColor="#fff"
+        outlineColor="#bbb"
+        activeOutlineColor="#fff"
         {...props}
       />
       {description && !errorText ? (

@@ -4,10 +4,10 @@ import { MD3Type } from "react-native-paper/lib/typescript/types";
 
 const fontConfig: Partial<MD3Type> = {
   fontFamily: Platform.select({
-    web: 'NotoSansKR-Thin, Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif',
-    ios: "NotoSansKR-Thin, System",
-    android: "NotoSansKR-Thin, sans-serif",
-    default: "NotoSansKR-Thin, sans-serif",
+    web: 'NotoSansKR, Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif',
+    ios: "NotoSansKR, System",
+    android: "NotoSansKR, sans-serif",
+    default: "NotoSansKR, sans-serif",
   }),
   fontWeight: "600",
   letterSpacing: 0.5,
@@ -21,7 +21,7 @@ export const theme = {
   colors: {
     ...DefaultTheme.colors,
     text: "#1E212B",
-    primary: "#1260CC",
+    primary: "#2337C8",
     secondary: "#1F2732",
     error: "#ED1C24",
   },

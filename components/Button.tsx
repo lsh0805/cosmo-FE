@@ -12,6 +12,7 @@ const Button: React.FC<PaperButtonProps> = ({ mode, style, ...props }) => {
       style={[styles.button, style]}
       labelStyle={styles.text}
       mode={mode}
+      buttonColor={mode == "contained" ? theme.colors.primary : undefined}
       {...props}
     />
   );

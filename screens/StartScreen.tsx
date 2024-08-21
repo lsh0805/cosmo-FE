@@ -1,13 +1,19 @@
-import { StyleSheet, View } from "react-native";
-import { useWindowDimensions } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-import Button from "../components/Button";
-import TextInput from "../components/TextInput";
-import { Text } from "../components/Text";
 import { useState } from "react";
+import { StyleSheet, useWindowDimensions, View } from "react-native";
+import {
+  Easing,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
 import { NativeStackScreenProps } from "react-native-screens/lib/typescript/native-stack/types";
 import { RootStackParamList } from "../App";
 import Cosmo from "../assets/images/logo.svg";
+import { StartLinearGradient } from "../components";
+import Button from "../components/Button";
+import { Text } from "../components/Text";
+import TextInput from "../components/TextInput";
+import { Divider, Modal, Portal } from "react-native-paper";
 
 type StartScreenProps = NativeStackScreenProps<RootStackParamList, "Start">;
 
@@ -17,14 +23,31 @@ export default function StartScreen({
   const { width, height } = useWindowDimensions();
   const [phoneNumber, setPhoneNumber] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [visible, setVisible] = useState(false);
+  const translateY = useSharedValue(300);
+
+  const showModal = () => {
+    setVisible(true);
+    translateY.value = withTiming(0, {
+      duration: 300,
+      easing: Easing.out(Easing.ease),
+    });
+  };
+
+  const hideModal = () => {
+    translateY.value = withTiming(300, {
+      duration: 300,
+      easing: Easing.in(Easing.ease),
+    });
+    setTimeout(() => setVisible(false), 300);
+  };
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ translateY: translateY.value }],
+  }));
 
   return (
-    <LinearGradient
-      colors={["#020d36", "#000005", "#020d36"]}
-      start={[0, 0]}
-      end={[1, 1]}
-      style={[styles.background, { width: width, height: height }]}
-    >
+    <StartLinearGradient>
       <View style={styles.layout}>
         <View
           style={[
@@ -33,17 +56,65 @@ export default function StartScreen({
           ]}
         >
           <View style={[styles.top_container, { width: "100%" }]}>
-            <Cosmo width={50} height={50} />
-            <Text
-              style={[
-                styles.app_name,
-                {
-                  color: "#fff",
-                },
-              ]}
-            >
-              cosmo
-            </Text>
+            <View style={styles.logo_container}>
+              <Cosmo width={50} height={50} />
+              <Text style={styles.app_name}>cosmo</Text>
+            </View>
+            <View style={styles.language_select_container}>
+              <Button
+                icon="chevron-down"
+                mode="text"
+                contentStyle={{ flexDirection: "row-reverse" }}
+                textColor="#fff"
+                compact={true}
+                onPress={showModal}
+              >
+                한국어
+              </Button>
+              <Portal>
+                <Modal
+                  visible={visible}
+                  onDismiss={hideModal}
+                  contentContainerStyle={[styles.modalContainer, animatedStyle]}
+                >
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "flex-start",
+                      width: "100%",
+                    }}
+                  >
+                    <Button
+                      mode="text"
+                      icon="close"
+                      compact={true}
+                      onPress={hideModal}
+                      style={{ width: 50 }}
+                    >
+                      {null}
+                    </Button>
+                  </View>
+                  <View style={{ width: "100%" }}>
+                    <Button mode="text" onPress={hideModal}>
+                      한국어
+                    </Button>
+                  </View>
+                  <Divider style={styles.divider} />
+                  <View style={{ width: "100%" }}>
+                    <Button mode="text" onPress={hideModal}>
+                      English
+                    </Button>
+                  </View>
+                  <Divider style={styles.divider} />
+                  <View style={{ width: "100%" }}>
+                    <Button mode="text" onPress={hideModal}>
+                      日本語
+                    </Button>
+                  </View>
+                </Modal>
+              </Portal>
+            </View>
           </View>
           <View style={[styles.auth_container, { width: "100%" }]}>
             <TextInput
@@ -56,9 +127,6 @@ export default function StartScreen({
               autoCapitalize="none"
               textContentType="telephoneNumber"
               keyboardType="number-pad"
-              textColor="#fff"
-              outlineColor="#fff"
-              activeOutlineColor="#d98cff"
             />
             <TextInput
               label="비밀번호"
@@ -71,16 +139,8 @@ export default function StartScreen({
               textContentType="password"
               secureTextEntry={true}
               keyboardType="default"
-              textColor="#fff"
-              outlineColor="#fff"
-              activeOutlineColor="#d98cff"
             />
-            <Button
-              mode="contained"
-              onPress={() => {}}
-              buttonColor="#00aae4"
-              textColor="#fff"
-            >
+            <Button mode="contained" onPress={() => {}} textColor="#fff">
               로그인
             </Button>
           </View>
@@ -89,14 +149,16 @@ export default function StartScreen({
               mode="outlined"
               textColor="#fff"
               style={[{ borderColor: "#fff", borderWidth: 3 }]}
-              onPress={() => {}}
+              onPress={() => {
+                navigation.navigate("Register_1");
+              }}
             >
               가입하기
             </Button>
           </View>
         </View>
       </View>
-    </LinearGradient>
+    </StartLinearGradient>
   );
 }
 
@@ -114,35 +176,73 @@ const styles = StyleSheet.create({
     display: "flex",
     backgroundColor: "none",
     flexDirection: "column",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     alignContent: "center",
     alignItems: "center",
   },
   top_container: {
     display: "flex",
+    justifyContent: "center",
+    alignContent: "center",
+    alignItems: "center",
+    flex: 2,
+  },
+  logo_container: {
+    display: "flex",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+    textAlign: "center",
     gap: 15,
-  },
-  logo: {
-    flex: 0,
   },
   app_name: {
     display: "flex",
     justifyContent: "center",
     textAlign: "center",
+    fontWeight: "light",
+    fontSize: 48,
+    color: "#fff",
+  },
+  language_select_container: {
+    display: "flex",
+    justifyContent: "center",
+    textAlign: "center",
+    color: "#fff",
+  },
+  modalContainer: {
+    backgroundColor: "white",
+    padding: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    position: "absolute",
+    bottom: 0,
+    width: "100%",
+    justifyContent: "center",
+    alignContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
+  },
+  modalText: {
+    fontSize: 18,
+    marginBottom: 20,
+  },
+  divider: {
+    width: "10%",
+    height: 3,
+    backgroundColor: "#ddd", // 필요에 따라 색상을 조정
   },
   auth_container: {
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
+    flex: 5,
   },
   bottom_container: {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    flex: 1,
   },
   button: {
     width: "100%",
