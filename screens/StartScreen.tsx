@@ -1,5 +1,10 @@
 import { useState } from "react";
-import { StyleSheet, useWindowDimensions, View } from "react-native";
+import {
+  GestureResponderEvent,
+  StyleSheet,
+  useWindowDimensions,
+  View,
+} from "react-native";
 import {
   Easing,
   useAnimatedStyle,
@@ -21,6 +26,7 @@ export default function StartScreen({
   navigation,
 }: StartScreenProps): React.JSX.Element {
   const { width, height } = useWindowDimensions();
+  const [langugae, setLanguage] = useState<string>("한국어");
   const [phoneNumber, setPhoneNumber] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [visible, setVisible] = useState(false);
@@ -40,6 +46,11 @@ export default function StartScreen({
       easing: Easing.in(Easing.ease),
     });
     setTimeout(() => setVisible(false), 300);
+  };
+
+  const selectLanguage = (e: GestureResponderEvent, lang: string) => {
+    setLanguage(lang);
+    hideModal();
   };
 
   const animatedStyle = useAnimatedStyle(() => ({
@@ -69,7 +80,7 @@ export default function StartScreen({
                 compact={true}
                 onPress={showModal}
               >
-                한국어
+                {langugae}
               </Button>
               <Portal>
                 <Modal
@@ -96,19 +107,28 @@ export default function StartScreen({
                     </Button>
                   </View>
                   <View style={{ width: "100%" }}>
-                    <Button mode="text" onPress={hideModal}>
+                    <Button
+                      mode="text"
+                      onPress={(e) => selectLanguage(e, "한국어")}
+                    >
                       한국어
                     </Button>
                   </View>
                   <Divider style={styles.divider} />
                   <View style={{ width: "100%" }}>
-                    <Button mode="text" onPress={hideModal}>
+                    <Button
+                      mode="text"
+                      onPress={(e) => selectLanguage(e, "English")}
+                    >
                       English
                     </Button>
                   </View>
                   <Divider style={styles.divider} />
                   <View style={{ width: "100%" }}>
-                    <Button mode="text" onPress={hideModal}>
+                    <Button
+                      mode="text"
+                      onPress={(e) => selectLanguage(e, "日本語")}
+                    >
                       日本語
                     </Button>
                   </View>

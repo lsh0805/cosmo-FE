@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   description: {
+    fontWeight: "light",
     lineHeight: 24,
     fontSize: 16,
     marginTop: 10,

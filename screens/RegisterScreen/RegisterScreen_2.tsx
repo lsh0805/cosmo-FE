@@ -141,8 +141,10 @@ const styles = StyleSheet.create({
     lineHeight: 44,
     fontSize: 24,
     borderWidth: 2,
-    borderColor: "#fff",
+    borderColor: "#888",
+    backgroundColor: theme.colors.secondary,
     textAlign: "center",
+    borderRadius: 4,
     color: "#fff",
   },
   focusCell: {
