@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { NativeStackScreenProps } from "react-native-screens/lib/typescript/native-stack/types";
 import { RootStackParamList } from "../../App";
 import { RegisterLayout } from "../../components";
 import Button from "../../components/Button";
 import TextInput from "../../components/TextInput";
+import RegisterContext from "../../contexts/RegisterProvider";
 
 type RegisterScreenProps = NativeStackScreenProps<
   RootStackParamList,
@@ -16,6 +17,17 @@ export default function RegisterScreen_4({
 }: RegisterScreenProps): React.JSX.Element {
   const [userId, setUserId] = useState("");
   const [username, setUsername] = useState("");
+  const { registerData, setRegisterData } = useContext(RegisterContext);
+
+  const onUserIdChange = (value: string) => {
+    setUserId(value);
+    setRegisterData({ ...registerData, userId: value });
+  };
+
+  const onUsernameChange = (value: string) => {
+    setUsername(value);
+    setRegisterData({ ...registerData, userName: value });
+  };
 
   return (
     <RegisterLayout
@@ -31,12 +43,11 @@ export default function RegisterScreen_4({
             label="계정 아이디"
             returnKeyType="next"
             value={userId}
-            onChangeText={setUserId}
+            onChangeText={onUserIdChange}
             error={false}
             errorText=""
             autoCapitalize="none"
-            textContentType="telephoneNumber"
-            keyboardType="number-pad"
+            keyboardType="default"
           />
         </View>
         <View style={styles.center_row_2}>
@@ -44,11 +55,22 @@ export default function RegisterScreen_4({
             label="계정 이름"
             returnKeyType="next"
             value={username}
-            onChangeText={setUsername}
+            onChangeText={onUsernameChange}
             error={false}
             autoCapitalize="none"
-            textContentType="password"
-            secureTextEntry={true}
+            textContentType="nickname"
+            keyboardType="default"
+          />
+        </View>
+        <View style={styles.center_row_3}>
+          <TextInput
+            label="계정 복구용 이메일"
+            returnKeyType="next"
+            value={username}
+            onChangeText={onUsernameChange}
+            error={false}
+            autoCapitalize="none"
+            textContentType="emailAddress"
             keyboardType="default"
           />
         </View>
@@ -59,7 +81,7 @@ export default function RegisterScreen_4({
               navigation.navigate("Start");
             }}
           >
-            다음
+            가입하기
           </Button>
         </View>
       </View>

@@ -11,6 +11,7 @@ import {
 } from "./screens";
 import { registerRootComponent } from "expo";
 import { useFonts } from "expo-font";
+import { RegisterProvider } from "./contexts/RegisterProvider";
 
 export type RootStackParamList = {
   Start: undefined;
@@ -32,20 +33,22 @@ export default function App() {
   }
   return (
     <Provider theme={theme}>
-      <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName="Start"
-          screenOptions={{
-            headerShown: false,
-          }}
-        >
-          <Stack.Screen name="Start" component={StartScreen} />
-          <Stack.Screen name="Register_1" component={RegisterScreen_1} />
-          <Stack.Screen name="Register_2" component={RegisterScreen_2} />
-          <Stack.Screen name="Register_3" component={RegisterScreen_3} />
-          <Stack.Screen name="Register_4" component={RegisterScreen_4} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <RegisterProvider>
+        <NavigationContainer>
+          <Stack.Navigator
+            initialRouteName="Start"
+            screenOptions={{
+              headerShown: false,
+            }}
+          >
+            <Stack.Screen name="Start" component={StartScreen} />
+            <Stack.Screen name="Register_1" component={RegisterScreen_1} />
+            <Stack.Screen name="Register_2" component={RegisterScreen_2} />
+            <Stack.Screen name="Register_3" component={RegisterScreen_3} />
+            <Stack.Screen name="Register_4" component={RegisterScreen_4} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </RegisterProvider>
     </Provider>
   );
 }

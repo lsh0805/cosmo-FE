@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { NativeStackScreenProps } from "react-native-screens/lib/typescript/native-stack/types";
 import { RootStackParamList } from "../../App";
 import { RegisterLayout } from "../../components";
 import Button from "../../components/Button";
 import TextInput from "../../components/TextInput";
+import RegisterContext from "../../contexts/RegisterProvider";
 
 type RegisterScreenProps = NativeStackScreenProps<
   RootStackParamList,
@@ -15,6 +16,12 @@ export default function RegisterScreen_1({
   navigation,
 }: RegisterScreenProps): React.JSX.Element {
   const [phoneNumber, setPhoneNumber] = useState<string>("");
+  const { registerData, setRegisterData } = useContext(RegisterContext);
+
+  const onPhoneNumberInputChange = (value: string) => {
+    setRegisterData({ ...registerData, phoneNumber: phoneNumber });
+    setPhoneNumber(value);
+  };
 
   return (
     <RegisterLayout
@@ -30,7 +37,7 @@ export default function RegisterScreen_1({
             label="휴대폰 번호"
             returnKeyType="next"
             value={phoneNumber}
-            onChangeText={setPhoneNumber}
+            onChangeText={onPhoneNumberInputChange}
             error={false}
             autoCapitalize="none"
             textContentType="telephoneNumber"

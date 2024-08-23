@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { NativeStackScreenProps } from "react-native-screens/lib/typescript/native-stack/types";
 import { RootStackParamList } from "../../App";
 import { RegisterLayout } from "../../components";
 import Button from "../../components/Button";
 import TextInput from "../../components/TextInput";
+import RegisterContext from "../../contexts/RegisterProvider";
 
 type RegisterScreenProps = NativeStackScreenProps<
   RootStackParamList,
@@ -16,6 +17,16 @@ export default function RegisterScreen_3({
 }: RegisterScreenProps): React.JSX.Element {
   const [password, setPassword] = useState("");
   const [passwordDup, setPasswordDup] = useState("");
+  const { registerData, setRegisterData } = useContext(RegisterContext);
+
+  const onPasswordChange = (value: string) => {
+    setPassword(value);
+    setRegisterData({ ...registerData, password: value });
+  };
+
+  const onPasswordDupChange = (value: string) => {
+    setPasswordDup(value);
+  };
 
   return (
     <RegisterLayout
@@ -31,7 +42,7 @@ export default function RegisterScreen_3({
             label="비밀번호"
             returnKeyType="next"
             value={password}
-            onChangeText={setPassword}
+            onChangeText={onPasswordChange}
             error={false}
             autoCapitalize="none"
             textContentType="password"
@@ -44,7 +55,7 @@ export default function RegisterScreen_3({
             label="비밀번호 재입력"
             returnKeyType="next"
             value={passwordDup}
-            onChangeText={setPasswordDup}
+            onChangeText={onPasswordDupChange}
             error={false}
             autoCapitalize="none"
             textContentType="password"
