@@ -6,8 +6,8 @@ const fontConfig: Partial<MD3Type> = {
   fontFamily: Platform.select({
     web: 'NotoSansKR, Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif',
     ios: "NotoSansKR, System",
-    android: "NotoSansKR, sans-serif",
-    default: "NotoSansKR, sans-serif",
+    android: "NotoSansKR",
+    default: "NotoSansKR",
   }),
   fontWeight: "600",
   letterSpacing: 0.5,

@@ -7,15 +7,15 @@ import {
   useClearByFocusCell,
 } from "react-native-confirmation-code-field";
 import { TextInput } from "react-native-paper";
-import { NativeStackScreenProps } from "react-native-screens/lib/typescript/native-stack/types";
-import { RootStackParamList } from "../../App";
 import { RegisterLayout } from "../../components";
 import Button from "../../components/Button";
 import { Text } from "../../components/Text";
 import { theme } from "../../core/theme";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RegisterStackParamList } from "../../navigation_stack/RegisterStack";
 
 type RegisterScreenProps = NativeStackScreenProps<
-  RootStackParamList,
+  RegisterStackParamList,
   "Register_2"
 >;
 

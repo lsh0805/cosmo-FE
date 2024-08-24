@@ -1,23 +1,19 @@
+import { Route } from "@react-navigation/native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { ReactNode } from "react";
-import { StyleSheet, View, ViewStyle } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { IconButton } from "react-native-paper";
-import { NativeStackNavigationProp } from "react-native-screens/lib/typescript/native-stack/types";
-import { RootStackParamList } from "../App";
-import { StartLinearGradient, Text } from "./";
-import {
-  NavigationProp,
-  NavigationState,
-  Route,
-  useNavigationState,
-} from "@react-navigation/native";
+import { RegisterStackParamList } from "../navigation_stack/RegisterStack";
+import StartLinearGradient from "./StartLinearGradient";
+import Text from "./Text";
 
 interface RegisterLayoutProps {
   title: string;
   description: string;
-  navigation: NativeStackNavigationProp<
-    RootStackParamList,
-    keyof RootStackParamList
-  >;
+  navigation: NativeStackScreenProps<
+    RegisterStackParamList,
+    keyof RegisterStackParamList
+  >["navigation"];
   children?: ReactNode;
 }
 
@@ -27,12 +23,6 @@ const RegisterLayout: React.FC<RegisterLayoutProps> = ({
   navigation,
   children,
 }) => {
-  const previousRouteName = useNavigationState((state) => {
-    const currentIndex = state.index;
-    const previousRoute = state.routes[currentIndex - 1] as Route<string>;
-
-    return previousRoute ? previousRoute.name : null;
-  });
   return (
     <StartLinearGradient>
       <View style={styles.layout}>
@@ -40,9 +30,7 @@ const RegisterLayout: React.FC<RegisterLayoutProps> = ({
           icon={"arrow-left"}
           size={20}
           animated={true}
-          onPress={() => {
-            navigation.navigate(previousRouteName as keyof RootStackParamList);
-          }}
+          onPress={navigation.goBack}
           iconColor="#fff"
           style={{ margin: 0, marginBottom: 24 }}
         />

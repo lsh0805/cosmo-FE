@@ -1,5 +1,4 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
 import { Provider } from "react-native-paper";
 import { theme } from "./core/theme";
 import {
@@ -12,16 +11,11 @@ import {
 import { registerRootComponent } from "expo";
 import { useFonts } from "expo-font";
 import { RegisterProvider } from "./contexts/RegisterProvider";
-
-export type RootStackParamList = {
-  Start: undefined;
-  Register_1: undefined;
-  Register_2: undefined;
-  Register_3: undefined;
-  Register_4: undefined;
-};
-
-const Stack = createStackNavigator<RootStackParamList>();
+import { RegisterStack } from "./navigation_stack/RegisterStack";
+import {
+  CardStyleInterpolators,
+  TransitionSpecs,
+} from "@react-navigation/stack";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -31,22 +25,52 @@ export default function App() {
   if (!fontsLoaded) {
     return null;
   }
+
+  const config = {
+    animation: "spring",
+    config: {
+      stiffness: 1000,
+      damping: 500,
+      mass: 3,
+      overshootClamping: true,
+      restDisplacementThreshold: 0.01,
+      restSpeedThreshold: 0.01,
+    },
+  };
+
   return (
     <Provider theme={theme}>
       <RegisterProvider>
         <NavigationContainer>
-          <Stack.Navigator
+          <RegisterStack.Navigator
             initialRouteName="Start"
             screenOptions={{
               headerShown: false,
+              transitionSpec: {
+                open: TransitionSpecs.FadeInFromBottomAndroidSpec,
+                close: TransitionSpecs.FadeOutToBottomAndroidSpec,
+              },
+              cardStyleInterpolator: CardStyleInterpolators.forFadeFromCenter,
             }}
           >
-            <Stack.Screen name="Start" component={StartScreen} />
-            <Stack.Screen name="Register_1" component={RegisterScreen_1} />
-            <Stack.Screen name="Register_2" component={RegisterScreen_2} />
-            <Stack.Screen name="Register_3" component={RegisterScreen_3} />
-            <Stack.Screen name="Register_4" component={RegisterScreen_4} />
-          </Stack.Navigator>
+            <RegisterStack.Screen name="Start" component={StartScreen} />
+            <RegisterStack.Screen
+              name="Register_1"
+              component={RegisterScreen_1}
+            />
+            <RegisterStack.Screen
+              name="Register_2"
+              component={RegisterScreen_2}
+            />
+            <RegisterStack.Screen
+              name="Register_3"
+              component={RegisterScreen_3}
+            />
+            <RegisterStack.Screen
+              name="Register_4"
+              component={RegisterScreen_4}
+            />
+          </RegisterStack.Navigator>
         </NavigationContainer>
       </RegisterProvider>
     </Provider>

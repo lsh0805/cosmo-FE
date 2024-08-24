@@ -1,14 +1,14 @@
 import { useContext, useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { NativeStackScreenProps } from "react-native-screens/lib/typescript/native-stack/types";
-import { RootStackParamList } from "../../App";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RegisterLayout } from "../../components";
 import Button from "../../components/Button";
 import TextInput from "../../components/TextInput";
 import RegisterContext from "../../contexts/RegisterProvider";
+import { RegisterStackParamList } from "../../navigation_stack/RegisterStack";
 
 type RegisterScreenProps = NativeStackScreenProps<
-  RootStackParamList,
+  RegisterStackParamList,
   "Register_4"
 >;
 

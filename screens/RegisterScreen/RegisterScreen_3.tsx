@@ -1,14 +1,15 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { NativeStackScreenProps } from "react-native-screens/lib/typescript/native-stack/types";
-import { RootStackParamList } from "../../App";
 import { RegisterLayout } from "../../components";
 import Button from "../../components/Button";
 import TextInput from "../../components/TextInput";
 import RegisterContext from "../../contexts/RegisterProvider";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RegisterStackParamList } from "../../navigation_stack/RegisterStack";
+import { useIsFocused } from "@react-navigation/native";
 
 type RegisterScreenProps = NativeStackScreenProps<
-  RootStackParamList,
+  RegisterStackParamList,
   "Register_3"
 >;
 
@@ -18,6 +19,26 @@ export default function RegisterScreen_3({
   const [password, setPassword] = useState("");
   const [passwordDup, setPasswordDup] = useState("");
   const { registerData, setRegisterData } = useContext(RegisterContext);
+
+  const isFocused = useIsFocused();
+  const [handled, setHandled] = useState(false);
+
+  useEffect(() => {
+    if (!isFocused || handled) return;
+
+    const unsubscribe = navigation.addListener("beforeRemove", (e) => {
+      e.preventDefault();
+      if (!handled) {
+        setHandled(true);
+        navigation.navigate("Register_1");
+      }
+    });
+
+    return () => {
+      setHandled(false);
+      unsubscribe();
+    };
+  }, [isFocused, handled, navigation]);
 
   const onPasswordChange = (value: string) => {
     setPassword(value);

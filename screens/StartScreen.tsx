@@ -1,10 +1,19 @@
-import { useState } from "react";
+import {
+  BottomSheetModal,
+  BottomSheetModalProvider,
+  BottomSheetView,
+  BottomSheetBackdrop,
+  BottomSheetBackdropProps,
+} from "@gorhom/bottom-sheet";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import {
   GestureResponderEvent,
   StyleSheet,
   useWindowDimensions,
   View,
 } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { Divider } from "react-native-paper";
 import {
   Easing,
   useAnimatedStyle,
@@ -12,15 +21,15 @@ import {
   withTiming,
 } from "react-native-reanimated";
 import { NativeStackScreenProps } from "react-native-screens/lib/typescript/native-stack/types";
-import { RootStackParamList } from "../App";
 import Cosmo from "../assets/images/logo.svg";
 import { StartLinearGradient } from "../components";
+import { BottomSheetRefProps } from "../components/BottomSheet";
 import Button from "../components/Button";
 import { Text } from "../components/Text";
 import TextInput from "../components/TextInput";
-import { Divider, Modal, Portal } from "react-native-paper";
+import { RegisterStackParamList } from "../navigation_stack/RegisterStack";
 
-type StartScreenProps = NativeStackScreenProps<RootStackParamList, "Start">;
+type StartScreenProps = NativeStackScreenProps<RegisterStackParamList, "Start">;
 
 export default function StartScreen({
   navigation,
@@ -53,132 +62,141 @@ export default function StartScreen({
     hideModal();
   };
 
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: translateY.value }],
-  }));
+  const renderBackdrop = useCallback(
+    (props: BottomSheetBackdropProps) => (
+      <BottomSheetBackdrop
+        {...props}
+        pressBehavior="close"
+        appearsOnIndex={0}
+        disappearsOnIndex={-1}
+      />
+    ),
+    []
+  );
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+
+  // variables
+  const snapPoints = useMemo(() => ["50%"], []);
+
+  // callbacks
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, []);
+  const handleSheetChanges = useCallback((index: number) => {
+    console.log("handleSheetChanges", index);
+  }, []);
 
   return (
-    <StartLinearGradient>
-      <View style={styles.layout}>
-        <View
-          style={[
-            styles.container,
-            { width: width * 0.8, height: height * 0.8 },
-          ]}
-        >
-          <View style={[styles.top_container, { width: "100%" }]}>
-            <View style={styles.logo_container}>
-              <Cosmo width={50} height={50} />
-              <Text style={styles.app_name}>cosmo</Text>
-            </View>
-            <View style={styles.language_select_container}>
-              <Button
-                icon="chevron-down"
-                mode="text"
-                contentStyle={{ flexDirection: "row-reverse" }}
-                textColor="#fff"
-                compact={true}
-                onPress={showModal}
-              >
-                {langugae}
-              </Button>
-              <Portal>
-                <Modal
-                  visible={visible}
-                  onDismiss={hideModal}
-                  contentContainerStyle={[styles.modalContainer, animatedStyle]}
-                >
-                  <View
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      justifyContent: "flex-start",
-                      width: "100%",
-                    }}
-                  >
-                    <Button
-                      mode="text"
-                      icon="close"
-                      compact={true}
-                      onPress={hideModal}
-                      style={{ width: 50 }}
-                    >
-                      {null}
-                    </Button>
-                  </View>
-                  <View style={{ width: "100%" }}>
-                    <Button
-                      mode="text"
-                      onPress={(e) => selectLanguage(e, "한국어")}
-                    >
-                      한국어
-                    </Button>
-                  </View>
-                  <Divider style={styles.divider} />
-                  <View style={{ width: "100%" }}>
-                    <Button
-                      mode="text"
-                      onPress={(e) => selectLanguage(e, "English")}
-                    >
-                      English
-                    </Button>
-                  </View>
-                  <Divider style={styles.divider} />
-                  <View style={{ width: "100%" }}>
-                    <Button
-                      mode="text"
-                      onPress={(e) => selectLanguage(e, "日本語")}
-                    >
-                      日本語
-                    </Button>
-                  </View>
-                </Modal>
-              </Portal>
-            </View>
-          </View>
-          <View style={[styles.auth_container, { width: "100%" }]}>
-            <TextInput
-              label="휴대폰 번호"
-              returnKeyType="next"
-              value={phoneNumber}
-              onChangeText={setPhoneNumber}
-              error={false}
-              errorText=""
-              autoCapitalize="none"
-              textContentType="telephoneNumber"
-              keyboardType="number-pad"
-            />
-            <TextInput
-              label="비밀번호"
-              returnKeyType="next"
-              value={password}
-              onChangeText={setPassword}
-              error={false}
-              errorText=""
-              autoCapitalize="none"
-              textContentType="password"
-              secureTextEntry={true}
-              keyboardType="default"
-            />
-            <Button mode="contained" onPress={() => {}} textColor="#fff">
-              로그인
-            </Button>
-          </View>
-          <View style={(styles.bottom_container, { width: "100%" })}>
-            <Button
-              mode="outlined"
-              textColor="#fff"
-              style={[{ borderColor: "#fff", borderWidth: 3 }]}
-              onPress={() => {
-                navigation.navigate("Register_1");
-              }}
+    <GestureHandlerRootView>
+      <BottomSheetModalProvider>
+        <StartLinearGradient>
+          <View style={styles.layout}>
+            <View
+              style={[
+                styles.container,
+                { width: width * 0.8, height: height * 0.8 },
+              ]}
             >
-              가입하기
-            </Button>
+              <View style={[styles.top_container, { width: "100%" }]}>
+                <View style={styles.logo_container}>
+                  <Cosmo width={50} height={50} />
+                  <Text style={styles.app_name}>cosmo</Text>
+                </View>
+
+                <View style={styles.language_select_container}>
+                  <Button
+                    icon="chevron-down"
+                    mode="text"
+                    contentStyle={{ flexDirection: "row-reverse" }}
+                    textColor="#fff"
+                    compact={true}
+                    onPress={handlePresentModalPress}
+                  >
+                    {langugae}
+                  </Button>
+                </View>
+              </View>
+              <View style={[styles.auth_container, { width: "100%" }]}>
+                <TextInput
+                  label="휴대폰 번호"
+                  returnKeyType="next"
+                  value={phoneNumber}
+                  onChangeText={setPhoneNumber}
+                  error={false}
+                  errorText=""
+                  autoCapitalize="none"
+                  textContentType="telephoneNumber"
+                  keyboardType="number-pad"
+                />
+                <TextInput
+                  label="비밀번호"
+                  returnKeyType="next"
+                  value={password}
+                  onChangeText={setPassword}
+                  error={false}
+                  errorText=""
+                  autoCapitalize="none"
+                  textContentType="password"
+                  secureTextEntry={true}
+                  keyboardType="default"
+                />
+                <Button mode="contained" onPress={() => {}} textColor="#fff">
+                  로그인
+                </Button>
+              </View>
+              <View style={(styles.bottom_container, { width: "100%" })}>
+                <Button
+                  mode="outlined"
+                  textColor="#fff"
+                  style={[{ borderColor: "#fff", borderWidth: 3 }]}
+                  onPress={() => {
+                    navigation.navigate("Register_1");
+                  }}
+                >
+                  가입하기
+                </Button>
+              </View>
+            </View>
           </View>
-        </View>
-      </View>
-    </StartLinearGradient>
+          <BottomSheetModal
+            ref={bottomSheetModalRef}
+            index={0}
+            snapPoints={snapPoints}
+            backdropComponent={renderBackdrop}
+            onChange={handleSheetChanges}
+          >
+            <BottomSheetView style={styles.modalContainer}>
+              <View style={{ width: "100%" }}>
+                <Button
+                  mode="text"
+                  onPress={(e) => selectLanguage(e, "한국어")}
+                >
+                  한국어
+                </Button>
+              </View>
+              <Divider style={styles.divider} />
+              <View style={{ width: "100%" }}>
+                <Button
+                  mode="text"
+                  onPress={(e) => selectLanguage(e, "English")}
+                >
+                  English
+                </Button>
+              </View>
+              <Divider style={styles.divider} />
+              <View style={{ width: "100%" }}>
+                <Button
+                  mode="text"
+                  onPress={(e) => selectLanguage(e, "日本語")}
+                >
+                  日本語
+                </Button>
+              </View>
+            </BottomSheetView>
+          </BottomSheetModal>
+        </StartLinearGradient>
+      </BottomSheetModalProvider>
+    </GestureHandlerRootView>
   );
 }
 
@@ -230,17 +248,12 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   modalContainer: {
+    flex: 1,
     backgroundColor: "white",
-    padding: 20,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    position: "absolute",
-    bottom: 0,
     width: "100%",
     justifyContent: "center",
     alignContent: "center",
     alignItems: "center",
-    flexDirection: "column",
   },
   modalText: {
     fontSize: 18,
