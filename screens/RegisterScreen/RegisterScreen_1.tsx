@@ -16,10 +16,10 @@ export default function RegisterScreen_1({
   navigation,
 }: RegisterScreenProps): React.JSX.Element {
   const [phoneNumber, setPhoneNumber] = useState<string>("");
-  // const { registerData, setRegisterData } = useContext(RegisterContext);
+  const { registerData, setRegisterData } = useContext(RegisterContext);
 
   const onPhoneNumberInputChange = (value: string) => {
-    // setRegisterData({ ...registerData, phoneNumber: phoneNumber });
+    setRegisterData({ ...registerData, phoneNumber: phoneNumber });
     setPhoneNumber(value);
   };
 

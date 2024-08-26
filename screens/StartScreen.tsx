@@ -38,28 +38,11 @@ export default function StartScreen({
   const [langugae, setLanguage] = useState<string>("한국어");
   const [phoneNumber, setPhoneNumber] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [visible, setVisible] = useState(false);
-  const translateY = useSharedValue(300);
-
-  const showModal = () => {
-    setVisible(true);
-    translateY.value = withTiming(0, {
-      duration: 300,
-      easing: Easing.out(Easing.ease),
-    });
-  };
-
-  const hideModal = () => {
-    translateY.value = withTiming(300, {
-      duration: 300,
-      easing: Easing.in(Easing.ease),
-    });
-    setTimeout(() => setVisible(false), 300);
-  };
+  const [isInvalidIdPassword, setIsInvalidIdPassword] =
+    useState<boolean>(false);
 
   const selectLanguage = (e: GestureResponderEvent, lang: string) => {
     setLanguage(lang);
-    hideModal();
   };
 
   const renderBackdrop = useCallback(
@@ -122,7 +105,7 @@ export default function StartScreen({
                   returnKeyType="next"
                   value={phoneNumber}
                   onChangeText={setPhoneNumber}
-                  error={false}
+                  error={isInvalidIdPassword}
                   errorText=""
                   autoCapitalize="none"
                   textContentType="telephoneNumber"
@@ -133,14 +116,18 @@ export default function StartScreen({
                   returnKeyType="next"
                   value={password}
                   onChangeText={setPassword}
-                  error={false}
-                  errorText=""
+                  error={isInvalidIdPassword}
+                  errorText="잘못된 아이디 혹은 비밀번호입니다."
                   autoCapitalize="none"
                   textContentType="password"
                   secureTextEntry={true}
                   keyboardType="default"
                 />
-                <Button mode="contained" onPress={() => {}} textColor="#fff">
+                <Button
+                  mode="contained"
+                  onPress={() => setIsInvalidIdPassword(true)}
+                  textColor="#fff"
+                >
                   로그인
                 </Button>
               </View>

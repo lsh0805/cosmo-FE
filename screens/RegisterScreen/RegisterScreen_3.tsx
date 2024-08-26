@@ -20,16 +20,16 @@ export default function RegisterScreen_3({
   const [passwordDup, setPasswordDup] = useState("");
   const { registerData, setRegisterData } = useContext(RegisterContext);
 
-  const isFocused = useIsFocused();
   const [handled, setHandled] = useState(false);
 
   useEffect(() => {
-    if (!isFocused || handled) return;
-
+    if (handled) return;
     const unsubscribe = navigation.addListener("beforeRemove", (e) => {
       e.preventDefault();
       if (!handled) {
         setHandled(true);
+        console.log(handled);
+
         navigation.navigate("Register_1");
       }
     });
@@ -38,7 +38,7 @@ export default function RegisterScreen_3({
       setHandled(false);
       unsubscribe();
     };
-  }, [isFocused, handled, navigation]);
+  }, [handled, navigation]);
 
   const onPasswordChange = (value: string) => {
     setPassword(value);

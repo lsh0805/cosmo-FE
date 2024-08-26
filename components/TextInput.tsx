@@ -7,11 +7,13 @@ import {
 import { theme } from "../core/theme";
 
 interface TextInputProps extends InputProps {
+  error: boolean;
   errorText?: string;
   description?: string;
 }
 
 const TextInput: React.FC<TextInputProps> = ({
+  error,
   errorText,
   description,
   ...props
@@ -21,17 +23,19 @@ const TextInput: React.FC<TextInputProps> = ({
       <Input
         style={styles.input}
         selectionColor={theme.colors.primary}
-        underlineColor={undefined}
         mode="outlined"
         textColor="#fff"
-        outlineColor="#bbb"
         activeOutlineColor="#fff"
+        outlineColor="#666"
+        error={error}
         {...props}
       />
       {description && !errorText ? (
         <Text style={styles.description}>{description}</Text>
       ) : null}
-      {errorText ? <Text style={styles.error}>{errorText}</Text> : null}
+      {error && errorText ? (
+        <Text style={styles.error}>{errorText}</Text>
+      ) : null}
     </View>
   );
 };
@@ -45,6 +49,7 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: theme.colors.secondary,
+    fontFamily: "System",
   },
   description: {
     fontSize: 13,

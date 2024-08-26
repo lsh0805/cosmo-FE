@@ -9,10 +9,9 @@ const fontConfig: Partial<MD3Type> = {
     android: "NotoSansKR",
     default: "NotoSansKR",
   }),
-  fontWeight: "600",
+  fontWeight: "400",
+  fontSize: 24,
   letterSpacing: 0.5,
-  lineHeight: 50,
-  fontSize: 50,
 };
 
 export const theme = {
@@ -23,6 +22,6 @@ export const theme = {
     text: "#1E212B",
     primary: "#2337C8",
     secondary: "#1F2732",
-    error: "#ED1C24",
+    error: "#c71585",
   },
 };
