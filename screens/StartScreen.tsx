@@ -1,9 +1,9 @@
 import {
+  BottomSheetBackdrop,
+  BottomSheetBackdropProps,
   BottomSheetModal,
   BottomSheetModalProvider,
   BottomSheetView,
-  BottomSheetBackdrop,
-  BottomSheetBackdropProps,
 } from "@gorhom/bottom-sheet";
 import React, { useCallback, useMemo, useRef, useState } from "react";
 import {
@@ -14,20 +14,14 @@ import {
 } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Divider } from "react-native-paper";
-import {
-  Easing,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from "react-native-reanimated";
 import { NativeStackScreenProps } from "react-native-screens/lib/typescript/native-stack/types";
 import Cosmo from "../assets/images/logo.svg";
 import { StartLinearGradient } from "../components";
-import { BottomSheetRefProps } from "../components/BottomSheet";
 import Button from "../components/Button";
 import { Text } from "../components/Text";
 import TextInput from "../components/TextInput";
 import { RegisterStackParamList } from "../navigation_stack/RegisterStack";
+import { fontConfig } from "react-native-paper/lib/typescript/styles/fonts";
 
 type StartScreenProps = NativeStackScreenProps<RegisterStackParamList, "Start">;
 
@@ -82,7 +76,7 @@ export default function StartScreen({
             >
               <View style={[styles.top_container, { width: "100%" }]}>
                 <View style={styles.logo_container}>
-                  <Cosmo width={50} height={50} />
+                  <Cosmo width={58} height={58} />
                   <Text style={styles.app_name}>cosmo</Text>
                 </View>
 
@@ -90,7 +84,13 @@ export default function StartScreen({
                   <Button
                     icon="chevron-down"
                     mode="text"
-                    contentStyle={{ flexDirection: "row-reverse" }}
+                    style={{ margin: 0 }}
+                    labelStyle={{
+                      fontSize: 15,
+                    }}
+                    contentStyle={{
+                      flexDirection: "row-reverse",
+                    }}
                     textColor="#fff"
                     compact={true}
                     onPress={handlePresentModalPress}
@@ -218,19 +218,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     textAlign: "center",
-    gap: 15,
+    flex: 1,
+    gap: 12,
   },
   app_name: {
     display: "flex",
-    justifyContent: "center",
-    textAlign: "center",
     fontWeight: "light",
-    fontSize: 48,
+    fontSize: 44,
+    lineHeight: 44,
+    textAlign: "center",
     color: "#fff",
   },
   language_select_container: {
     display: "flex",
-    justifyContent: "center",
+    flexDirection: "column",
+    margin: 0,
+    flex: 2,
     textAlign: "center",
     color: "#fff",
   },
@@ -242,14 +245,10 @@ const styles = StyleSheet.create({
     alignContent: "center",
     alignItems: "center",
   },
-  modalText: {
-    fontSize: 18,
-    marginBottom: 20,
-  },
   divider: {
     width: "10%",
     height: 3,
-    backgroundColor: "#ddd", // 필요에 따라 색상을 조정
+    backgroundColor: "#ddd",
   },
   auth_container: {
     display: "flex",

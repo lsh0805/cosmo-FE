@@ -20,6 +20,7 @@ import {
 export default function App() {
   const [fontsLoaded] = useFonts({
     NotoSansKR: require("./assets/fonts/NotoSansKR-Thin.ttf"),
+    GothicA1: require("./assets/fonts/GothicA1-Regular.ttf"),
   });
 
   if (!fontsLoaded) {
@@ -27,7 +28,7 @@ export default function App() {
   }
 
   return (
-    <Provider theme={theme}>
+    <Provider>
       <RegisterProvider>
         <NavigationContainer>
           <RegisterStack.Navigator

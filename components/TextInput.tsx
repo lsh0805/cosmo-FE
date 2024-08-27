@@ -1,16 +1,30 @@
 import React from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, Platform } from "react-native";
 import {
+  configureFonts,
   TextInput as Input,
   TextInputProps as InputProps,
 } from "react-native-paper";
 import { theme } from "../core/theme";
+import { MD3Type } from "react-native-paper/lib/typescript/types";
 
 interface TextInputProps extends InputProps {
   error: boolean;
   errorText?: string;
   description?: string;
 }
+
+const fontConfig: Partial<MD3Type> = {
+  fontFamily: Platform.select({
+    web: 'NotoSansKR, GothicA1, "Helvetica Neue", Helvetica, Arial, sans-serif',
+    ios: "GothicA1, System",
+    android: "GothicA1",
+    default: "GothicA1",
+  }),
+  fontWeight: "400",
+  fontSize: 13,
+  letterSpacing: 0.5,
+};
 
 const TextInput: React.FC<TextInputProps> = ({
   error,
@@ -25,6 +39,7 @@ const TextInput: React.FC<TextInputProps> = ({
         selectionColor={theme.colors.primary}
         mode="outlined"
         textColor="#fff"
+        theme={{ fonts: configureFonts({ isV3: true, config: fontConfig }) }}
         activeOutlineColor="#fff"
         outlineColor="#666"
         error={error}
@@ -49,7 +64,6 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: theme.colors.secondary,
-    fontFamily: "System",
   },
   description: {
     fontSize: 13,
