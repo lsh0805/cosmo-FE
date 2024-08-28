@@ -21,7 +21,6 @@ import Button from "../components/Button";
 import { Text } from "../components/Text";
 import TextInput from "../components/TextInput";
 import { RegisterStackParamList } from "../navigation_stack/RegisterStack";
-import { fontConfig } from "react-native-paper/lib/typescript/styles/fonts";
 
 type StartScreenProps = NativeStackScreenProps<RegisterStackParamList, "Start">;
 
@@ -36,6 +35,7 @@ export default function StartScreen({
     useState<boolean>(false);
 
   const selectLanguage = (e: GestureResponderEvent, lang: string) => {
+    bottomSheetModalRef.current?.close();
     setLanguage(lang);
   };
 
@@ -153,31 +153,36 @@ export default function StartScreen({
             onChange={handleSheetChanges}
           >
             <BottomSheetView style={styles.modalContainer}>
-              <View style={{ width: "100%" }}>
-                <Button
-                  mode="text"
-                  onPress={(e) => selectLanguage(e, "한국어")}
-                >
-                  한국어
-                </Button>
-              </View>
-              <Divider style={styles.divider} />
-              <View style={{ width: "100%" }}>
-                <Button
-                  mode="text"
-                  onPress={(e) => selectLanguage(e, "English")}
-                >
-                  English
-                </Button>
-              </View>
-              <Divider style={styles.divider} />
-              <View style={{ width: "100%" }}>
-                <Button
-                  mode="text"
-                  onPress={(e) => selectLanguage(e, "日本語")}
-                >
-                  日本語
-                </Button>
+              <View style={styles.modalInnerContainer}>
+                <Divider style={styles.divider} />
+                <View style={{ width: "100%" }}>
+                  <Button
+                    mode="text"
+                    onPress={(e) => selectLanguage(e, "한국어")}
+                  >
+                    한국어
+                  </Button>
+                </View>
+                <Divider style={styles.divider} />
+                <View style={{ width: "100%" }}>
+                  <Button
+                    mode="text"
+                    onPress={(e) => selectLanguage(e, "English")}
+                  >
+                    English
+                  </Button>
+                </View>
+                <Divider style={styles.divider} />
+                <View style={{ width: "100%" }}>
+                  <Button
+                    mode="text"
+                    onPress={(e) => selectLanguage(e, "日本語")}
+                  >
+                    日本語
+                  </Button>
+                </View>
+
+                <Divider style={styles.divider} />
               </View>
             </BottomSheetView>
           </BottomSheetModal>
@@ -239,16 +244,20 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
-    backgroundColor: "white",
-    width: "100%",
+    justifyContent: "center",
+    alignContent: "center",
+    alignItems: "center",
+  },
+  modalInnerContainer: {
+    width: "80%",
     justifyContent: "center",
     alignContent: "center",
     alignItems: "center",
   },
   divider: {
-    width: "10%",
-    height: 3,
-    backgroundColor: "#ddd",
+    width: "100%",
+    height: 1,
+    backgroundColor: "#cfe3fe",
   },
   auth_container: {
     display: "flex",

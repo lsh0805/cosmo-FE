@@ -16,7 +16,7 @@ interface TextInputProps extends InputProps {
 
 const fontConfig: Partial<MD3Type> = {
   fontFamily: Platform.select({
-    web: 'NotoSansKR, GothicA1, "Helvetica Neue", Helvetica, Arial, sans-serif',
+    web: 'GothicA1, "Helvetica Neue", Helvetica, Arial, sans-serif',
     ios: "GothicA1, System",
     android: "GothicA1",
     default: "GothicA1",

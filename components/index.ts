@@ -4,4 +4,3 @@ export { default as Text } from './Text';
 export { default as TextInput } from './TextInput';
 export { default as StartLinearGradient } from './StartLinearGradient';
 export { default as RegisterLayout } from './RegisterLayout';
-export { default as BottomSheet } from './BottomSheet';

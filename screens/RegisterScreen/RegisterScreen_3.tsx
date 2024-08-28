@@ -19,26 +19,19 @@ export default function RegisterScreen_3({
   const [password, setPassword] = useState("");
   const [passwordDup, setPasswordDup] = useState("");
   const { registerData, setRegisterData } = useContext(RegisterContext);
-
-  const [handled, setHandled] = useState(false);
-
+  const isFocused = useIsFocused(); // 현재 화면이 포커스된 상태를 추적
+  const listener = (e: any) => {
+    e.preventDefault();
+    navigation.removeListener("beforeRemove", listener);
+    navigation.navigate("Register_1");
+  };
   useEffect(() => {
-    if (handled) return;
-    const unsubscribe = navigation.addListener("beforeRemove", (e) => {
-      e.preventDefault();
-      if (!handled) {
-        setHandled(true);
-        console.log(handled);
-
-        navigation.navigate("Register_1");
-      }
-    });
-
+    if (isFocused) navigation.addListener("beforeRemove", listener);
     return () => {
-      setHandled(false);
-      unsubscribe();
+      console.log("??");
+      navigation.removeListener("beforeRemove", listener);
     };
-  }, [handled, navigation]);
+  }, [isFocused, navigation]);
 
   const onPasswordChange = (value: string) => {
     setPassword(value);
@@ -89,6 +82,7 @@ export default function RegisterScreen_3({
             mode="contained"
             onPress={() => {
               navigation.navigate("Register_4");
+              navigation.removeListener("beforeRemove", listener);
             }}
           >
             다음

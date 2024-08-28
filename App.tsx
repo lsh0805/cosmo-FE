@@ -28,7 +28,7 @@ export default function App() {
   }
 
   return (
-    <Provider>
+    <Provider theme={theme}>
       <RegisterProvider>
         <NavigationContainer>
           <RegisterStack.Navigator
