@@ -125,7 +125,9 @@ export default function StartScreen({
                 />
                 <Button
                   mode="contained"
-                  onPress={() => setIsInvalidIdPassword(true)}
+                  onPress={() =>
+                    navigation.navigate("Main", { screen: "Friends" })
+                  }
                   textColor="#fff"
                 >
                   로그인

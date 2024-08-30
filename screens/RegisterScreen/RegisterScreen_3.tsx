@@ -28,7 +28,6 @@ export default function RegisterScreen_3({
   useEffect(() => {
     if (isFocused) navigation.addListener("beforeRemove", listener);
     return () => {
-      console.log("??");
       navigation.removeListener("beforeRemove", listener);
     };
   }, [isFocused, navigation]);
@@ -82,7 +81,6 @@ export default function RegisterScreen_3({
             mode="contained"
             onPress={() => {
               navigation.navigate("Register_4");
-              navigation.removeListener("beforeRemove", listener);
             }}
           >
             다음

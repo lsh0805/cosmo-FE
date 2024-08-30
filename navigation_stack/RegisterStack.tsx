@@ -6,6 +6,7 @@ export type RegisterStackParamList = {
   Register_2: undefined;
   Register_3: undefined;
   Register_4: undefined;
+  Main: { screen: string };
 };
 
 export const RegisterStack = createStackNavigator<RegisterStackParamList>();
