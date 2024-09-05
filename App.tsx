@@ -1,25 +1,41 @@
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
-import { Provider } from "react-native-paper";
-import { theme } from "./core/theme";
 import {
-  StartScreen,
+  CardStyleInterpolators,
+  TransitionSpecs,
+} from "@react-navigation/stack";
+import { registerRootComponent } from "expo";
+import { useFonts } from "expo-font";
+import { Provider } from "react-native-paper";
+import { RegisterProvider } from "./contexts/RegisterProvider";
+import { theme } from "./core/theme";
+import { MainStack } from "./navigation_stack/MainStack";
+import { RegisterStack } from "./navigation_stack/RegisterStack";
+import { RootStack } from "./navigation_stack/RootStack";
+import { StartScreen } from "./screens";
+import {
+  ChattingListScreen,
+  FriendsScreen,
+  ProfileScreen,
+} from "./screens/MainScreen";
+import {
   RegisterScreen_1,
   RegisterScreen_2,
   RegisterScreen_3,
   RegisterScreen_4,
-  FriendsScreen,
-} from "./screens";
-import { registerRootComponent } from "expo";
-import { useFonts } from "expo-font";
-import { RegisterProvider } from "./contexts/RegisterProvider";
-import { RegisterStack } from "./navigation_stack/RegisterStack";
-import {
-  CardStyleInterpolators,
-  createStackNavigator,
-  TransitionSpecs,
-} from "@react-navigation/stack";
-import { MainStack } from "./navigation_stack/MainStack";
-import { RootStack } from "./navigation_stack/RootStack";
+} from "./screens/RegisterScreen";
+
+const Tab = createBottomTabNavigator();
+
+function BottomTabs() {
+  return (
+    <Tab.Navigator initialRouteName="Profile">
+      <Tab.Screen name="Friends" component={FriendsScreen} />
+      <Tab.Screen name="ChattingList" component={ChattingListScreen} />
+      <Tab.Screen name="Profile" component={ProfileScreen} />
+    </Tab.Navigator>
+  );
+}
 
 function RegisterStackScreens() {
   return (
@@ -48,7 +64,7 @@ function RegisterStackScreens() {
 function MainStackScreens() {
   return (
     <MainStack.Navigator
-      initialRouteName="Friends"
+      initialRouteName="BottomTabs"
       screenOptions={{
         headerShown: false,
         transitionSpec: {
@@ -58,7 +74,7 @@ function MainStackScreens() {
         cardStyleInterpolator: CardStyleInterpolators.forFadeFromCenter,
       }}
     >
-      <MainStack.Screen name="Friends" component={FriendsScreen} />
+      <MainStack.Screen name="BottomTabs" component={BottomTabs} />
     </MainStack.Navigator>
   );
 }
