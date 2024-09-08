@@ -6,12 +6,12 @@ import {
 } from "react-native-paper";
 import { theme } from "../core/theme";
 
-const Button: React.FC<PaperButtonProps> = ({ mode, style, ...props }) => {
+const TextButton: React.FC<PaperButtonProps> = ({ mode, style, ...props }) => {
   return (
     <PaperButton
       style={[styles.button, style]}
       labelStyle={styles.text}
-      mode={mode}
+      mode={"text"}
       buttonColor={mode == "contained" ? theme.colors.primary : undefined}
       {...props}
     >
@@ -22,8 +22,7 @@ const Button: React.FC<PaperButtonProps> = ({ mode, style, ...props }) => {
 
 const styles = StyleSheet.create({
   button: {
-    width: "100%",
-    marginVertical: 10,
+    width: "auto",
   },
   text: {
     fontWeight: "bold",
@@ -32,4 +31,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Button;
+export default TextButton;

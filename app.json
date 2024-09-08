@@ -22,6 +22,15 @@
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-secure-store"
+    ],
+    "extra": {
+      "apiBaseUrl": {
+        "development": "http://localhost:8080/api",
+        "production": "http://localhost:8080/api"
+      }
     }
   }
 }

@@ -7,10 +7,9 @@ import React, {
 } from "react";
 
 interface IRegisterData {
-  phoneNumber: string;
+  userEmail: string;
   userId: string;
   userName: string;
-  userEmail: string;
   password: string;
 }
 
@@ -21,10 +20,9 @@ interface IRegisterContextDefault {
 
 const RegisterContext = createContext<IRegisterContextDefault>({
   registerData: {
-    phoneNumber: "",
+    userEmail: "",
     userId: "",
     userName: "",
-    userEmail: "",
     password: "",
   },
   setRegisterData: () => {},
@@ -38,10 +36,9 @@ export const RegisterProvider: React.FC<RegisterProviderProps> = ({
   children,
 }) => {
   const [registerData, setRegisterData] = useState<IRegisterData>({
-    phoneNumber: "",
+    userEmail: "",
     userId: "",
     userName: "",
-    userEmail: "",
     password: "",
   });
 

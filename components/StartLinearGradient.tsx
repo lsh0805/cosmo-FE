@@ -13,7 +13,7 @@ const StartLinearGradient: React.FC<StartLinearGradientProps> = ({
 }) => {
   return (
     <LinearGradient
-      colors={["#000005", "#0a2472"]}
+      colors={["#000", "#0e0c32"]}
       start={[0.5, 0]}
       end={[0.5, 1]}
       style={[styles.defaultStyle, style]}

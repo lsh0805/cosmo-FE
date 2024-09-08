@@ -39,9 +39,10 @@ const TextInput: React.FC<TextInputProps> = ({
         selectionColor={theme.colors.primary}
         mode="outlined"
         textColor="#fff"
+        outlineStyle={{ borderRadius: 9, borderWidth: 1 }}
         theme={{ fonts: configureFonts({ isV3: true, config: fontConfig }) }}
         activeOutlineColor="#fff"
-        outlineColor="#666"
+        outlineColor="#444"
         error={error}
         {...props}
       />

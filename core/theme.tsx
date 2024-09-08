@@ -9,7 +9,7 @@ const fontConfig: Partial<MD3Type> = {
     android: "NotoSansKR",
     default: "NotoSansKR",
   }),
-  fontWeight: "400",
+  fontWeight: "600",
   fontSize: 24,
   letterSpacing: 0.5,
 };
@@ -20,7 +20,7 @@ export const theme = {
   colors: {
     ...DefaultTheme.colors,
     text: "#1E212B",
-    primary: "#2337C8",
+    primary: "#1260cc",
     secondary: "#1F2732",
     error: "#c71585",
   },

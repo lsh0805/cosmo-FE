@@ -92,7 +92,6 @@ export default function StartScreen({
                       flexDirection: "row-reverse",
                     }}
                     textColor="#fff"
-                    compact={true}
                     onPress={handlePresentModalPress}
                   >
                     {langugae}
@@ -129,6 +128,7 @@ export default function StartScreen({
                     navigation.navigate("Main", { screen: "Friends" })
                   }
                   textColor="#fff"
+                  style={{ marginTop: 30 }}
                 >
                   로그인
                 </Button>
@@ -137,7 +137,7 @@ export default function StartScreen({
                 <Button
                   mode="outlined"
                   textColor="#fff"
-                  style={[{ borderColor: "#fff", borderWidth: 3 }]}
+                  style={[{ borderColor: "#fff", borderWidth: 1 }]}
                   onPress={() => {
                     navigation.navigate("Register_1");
                   }}

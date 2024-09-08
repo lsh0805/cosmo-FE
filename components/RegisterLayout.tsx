@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginTop: 10,
     marginBottom: 10,
+    textAlign: "auto",
     color: "#fff",
   },
   top_container: {
