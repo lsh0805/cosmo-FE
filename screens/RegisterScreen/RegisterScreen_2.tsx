@@ -1,7 +1,6 @@
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import axios from "axios";
-import * as Application from "expo-application";
 import { useContext, useEffect, useState } from "react";
 import { Platform, StyleSheet, View } from "react-native";
 import {
@@ -49,34 +48,14 @@ export default function RegisterScreen_2({
   const [value, setValue] = useState("");
   const [invalidCode, setInvalidCode] = useState<boolean>(false);
   const [incorrectCount, setIncorrectCount] = useState<number>(0);
-  const timeLeft = useCountdownTimer(180);
+  const timeLeft = useCountdownTimer(3600);
   const { registerData, setRegisterData } = useContext(RegisterContext);
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,
   });
-
-  const [deviceId, setDeviceId] = useState<string | null>(null);
   const [canRequestSMS, setCanRequestSMS] = useState<boolean>(true);
-
-  useEffect(() => {
-    let id: string | null = "null";
-
-    const fetchDeviceId = async () => {
-      if (Platform.OS === "android") {
-        id = Application.getAndroidId();
-      } else if (Platform.OS === "ios") {
-        id = await Application.getIosIdForVendorAsync();
-      } else {
-        // Unknown device.
-        id = "null";
-      }
-      setDeviceId(id);
-    };
-
-    fetchDeviceId();
-  }, []);
 
   const onPressNextButton = async () => {
     const response = await axios.post(restApiUrl.checkVerificationCode, {
@@ -97,10 +76,9 @@ export default function RegisterScreen_2({
   };
 
   const requestSMSCode = async (deviceId: string) => {
-    if (deviceId && canRequestSMS) {
+    if (canRequestSMS) {
       try {
         const response = await axios.post(restApiUrl.sendVerificationCode, {
-          deviceId: deviceId,
           email: registerData.userEmail,
         });
 
