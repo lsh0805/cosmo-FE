@@ -6,27 +6,60 @@ import Button from "../../components/Button";
 import TextInput from "../../components/TextInput";
 import RegisterContext from "../../contexts/RegisterProvider";
 import { RegisterStackParamList } from "../../navigation_stack/RegisterStack";
+import axios from "axios";
+import { restApiUrl } from "../../utility/api";
 
 type RegisterScreenProps = NativeStackScreenProps<
   RegisterStackParamList,
   "Register_4"
 >;
 
+type ErrorType = {
+  occur: boolean;
+  message: string;
+};
+
 export default function RegisterScreen_4({
   navigation,
 }: RegisterScreenProps): React.JSX.Element {
   const [userId, setUserId] = useState("");
-  const [username, setUsername] = useState("");
+  const [userName, setUserName] = useState("");
+  const [userIdError, setUserIdError] = useState<ErrorType>({
+    occur: false,
+    message: "",
+  });
+  const [userNameError, setUserNameError] = useState<ErrorType>({
+    occur: false,
+    message: "",
+  });
   const { registerData, setRegisterData } = useContext(RegisterContext);
 
   const onUserIdChange = (value: string) => {
+    setUserIdError({ occur: false, message: "" });
     setUserId(value);
-    setRegisterData({ ...registerData, userId: value });
   };
 
-  const onUsernameChange = (value: string) => {
-    setUsername(value);
-    setRegisterData({ ...registerData, userName: value });
+  const onUserNameChange = (value: string) => {
+    setUserNameError({ occur: false, message: "" });
+    setUserName(value);
+  };
+
+  const onPressNextButton = async () => {
+    const userIdResponse = await axios.post(restApiUrl.checkUserId, {
+      userId: userId,
+    });
+    const userNameResponse = await axios.post(restApiUrl.checkUserName, {
+      userName: userName,
+    });
+
+    const success = userIdResponse.data.success && userNameResponse.data.sucess;
+    if (success) {
+      setRegisterData({ ...registerData, userId: userId, userName: userName });
+      navigation.navigate("profile");
+    } else {
+      setUserIdError(userIdResponse.data.error);
+      setUserNameError(userIdResponse.data.error);
+    }
   };
 
   return (
@@ -44,8 +77,8 @@ export default function RegisterScreen_4({
             returnKeyType="next"
             value={userId}
             onChangeText={onUserIdChange}
-            error={false}
-            errorText=""
+            error={userIdError.occur}
+            errorText={userIdError.message}
             autoCapitalize="none"
             keyboardType="default"
           />
@@ -54,33 +87,17 @@ export default function RegisterScreen_4({
           <TextInput
             label="계정 이름"
             returnKeyType="next"
-            value={username}
-            onChangeText={onUsernameChange}
-            error={false}
+            value={userName}
+            onChangeText={onUserNameChange}
+            error={userNameError.occur}
+            errorText={userNameError.message}
             autoCapitalize="none"
             textContentType="nickname"
             keyboardType="default"
           />
         </View>
         <View style={styles.center_row_3}>
-          <TextInput
-            label="계정 복구용 이메일"
-            returnKeyType="next"
-            value={username}
-            onChangeText={onUsernameChange}
-            error={false}
-            autoCapitalize="none"
-            textContentType="emailAddress"
-            keyboardType="default"
-          />
-        </View>
-        <View style={styles.center_row_3}>
-          <Button
-            mode="contained"
-            onPress={() => {
-              navigation.navigate("Start");
-            }}
-          >
+          <Button mode="contained" onPress={onPressNextButton}>
             가입하기
           </Button>
         </View>

@@ -91,6 +91,7 @@ const styles = StyleSheet.create({
   userId: {
     fontSize: 18,
   },
+  top_right_btn: {},
   bio_container: {
     borderRadius: 5,
     backgroundColor: "#eee",

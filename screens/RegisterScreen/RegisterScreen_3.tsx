@@ -7,24 +7,41 @@ import RegisterContext from "../../contexts/RegisterProvider";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RegisterStackParamList } from "../../navigation_stack/RegisterStack";
 import { useIsFocused } from "@react-navigation/native";
+import { restApiUrl } from "../../utility/api";
+import axios from "axios";
 
 type RegisterScreenProps = NativeStackScreenProps<
   RegisterStackParamList,
   "Register_3"
 >;
 
+type ErrorType = {
+  occur: boolean;
+  message: string;
+};
+
 export default function RegisterScreen_3({
   navigation,
 }: RegisterScreenProps): React.JSX.Element {
   const [password, setPassword] = useState("");
   const [passwordDup, setPasswordDup] = useState("");
+  const [passwordError, setPasswordError] = useState<ErrorType>({
+    occur: false,
+    message: "",
+  });
+  const [passwordDupError, setPasswordDupError] = useState<ErrorType>({
+    occur: false,
+    message: "",
+  });
   const { registerData, setRegisterData } = useContext(RegisterContext);
-  const isFocused = useIsFocused(); // 현재 화면이 포커스된 상태를 추적
+  const isFocused = useIsFocused();
+
   const listener = (e: any) => {
     e.preventDefault();
     navigation.removeListener("beforeRemove", listener);
     navigation.navigate("Register_1");
   };
+
   useEffect(() => {
     if (isFocused) navigation.addListener("beforeRemove", listener);
     return () => {
@@ -33,19 +50,37 @@ export default function RegisterScreen_3({
   }, [isFocused, navigation]);
 
   const onPasswordChange = (value: string) => {
+    setPasswordError({ occur: false, message: "" });
+    setPasswordDupError({ occur: false, message: "" });
     setPassword(value);
-    setRegisterData({ ...registerData, password: value });
   };
 
   const onPasswordDupChange = (value: string) => {
+    setPasswordDupError({ occur: false, message: "" });
     setPasswordDup(value);
+  };
+
+  const onPressNextButton = async () => {
+    const response = await axios.post(restApiUrl.checkPassword, {
+      password: password,
+      passwordDup: passwordDup,
+    });
+    const data = response.data;
+    const success = data.success;
+    if (success) {
+      setRegisterData({ ...registerData, password: password });
+      navigation.navigate("Register_4");
+    } else {
+      setPasswordError(data.passwordError);
+      setPasswordDupError(data.passwordDupError);
+    }
   };
 
   return (
     <RegisterLayout
       title={"비밀번호 설정"}
       description={
-        "계정 로그인에 사용할 비밀번호를 입력해주세요. 계정의 보안을 위해 강력한 비밀번호를 설정할 것을 권고합니다."
+        "계정 로그인에 사용할 비밀번호를 입력해주세요. 계정의 보안을 위해 영문자와 숫자 그리고 특수문자를 포함하여 8자 이상으로 설정해야 합니다."
       }
       navigation={navigation}
     >
@@ -56,7 +91,8 @@ export default function RegisterScreen_3({
             returnKeyType="next"
             value={password}
             onChangeText={onPasswordChange}
-            error={false}
+            error={passwordError.occur}
+            errorText={passwordError.message}
             autoCapitalize="none"
             textContentType="password"
             secureTextEntry={true}
@@ -69,7 +105,8 @@ export default function RegisterScreen_3({
             returnKeyType="next"
             value={passwordDup}
             onChangeText={onPasswordDupChange}
-            error={false}
+            error={passwordDupError.occur}
+            errorText={passwordDupError.message}
             autoCapitalize="none"
             textContentType="password"
             secureTextEntry={true}
@@ -77,12 +114,7 @@ export default function RegisterScreen_3({
           />
         </View>
         <View style={styles.center_row_3}>
-          <Button
-            mode="contained"
-            onPress={() => {
-              navigation.navigate("Register_4");
-            }}
-          >
+          <Button mode="contained" onPress={onPressNextButton}>
             다음
           </Button>
         </View>

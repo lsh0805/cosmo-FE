@@ -17,7 +17,8 @@ import { Text } from "../../components/Text";
 import RegisterContext from "../../contexts/RegisterProvider";
 import { theme } from "../../core/theme";
 import { RegisterStackParamList } from "../../navigation_stack/RegisterStack";
-import { formattedTime, restApiUrl } from "../../utility/utility";
+import { restApiUrl } from "../../utility/api";
+import { formattedTime } from "../../utility/utility";
 
 type RegisterScreenProps = NativeStackScreenProps<
   RegisterStackParamList,
@@ -77,11 +78,13 @@ export default function RegisterScreen_2({
     fetchDeviceId();
   }, []);
 
-  const onPressNextButton = () => {
-    let passedVerification = false;
-
-    let incorrectCount = 3;
-    if (passedVerification) navigation.navigate("Register_3");
+  const onPressNextButton = async () => {
+    const response = await axios.post(restApiUrl.checkVerificationCode, {
+      verificationCode: value,
+    });
+    const success = response.data.success;
+    const incorrectCount = response.data.incorrectCount;
+    if (success) navigation.navigate("Register_3");
     else {
       setIncorrectCount(incorrectCount);
       setInvalidCode(true);
