@@ -18,6 +18,7 @@ export default function RegisterScreen_1({
 }: RegisterScreenProps): React.JSX.Element {
   const [email, setEmail] = useState<string>("");
   const [error, setError] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const { registerData, setRegisterData } = useContext(RegisterContext);
 
   const onEmailInputChange = (value: string) => {

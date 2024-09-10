@@ -10,5 +10,6 @@ export const restApiUrl = {
   checkVerificationCode: getApiBaseUrl() + "/send-verification-code",
   checkUserId: getApiBaseUrl() + "/check-user-id",
   checkUserName: getApiBaseUrl() + "/check-user-name",
+  checkUserIdAndName: getApiBaseUrl() + "/check-user-id-and-name",
   checkPassword: getApiBaseUrl() + "/check-password",
 };

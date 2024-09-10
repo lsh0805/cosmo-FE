@@ -9,7 +9,7 @@ import { useFonts } from "expo-font";
 import { Provider } from "react-native-paper";
 import { RegisterProvider } from "./contexts/RegisterProvider";
 import { theme } from "./core/theme";
-import { MainStack } from "./navigation_stack/MainStack";
+import { MainStack, MainStackParamList } from "./navigation_stack/MainStack";
 import { RegisterStack } from "./navigation_stack/RegisterStack";
 import { RootStack } from "./navigation_stack/RootStack";
 import { StartScreen } from "./screens";
@@ -25,7 +25,7 @@ import {
   RegisterScreen_4,
 } from "./screens/RegisterScreen";
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<MainStackParamList>();
 
 function BottomTabs() {
   return (

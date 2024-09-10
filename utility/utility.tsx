@@ -1,14 +1,3 @@
-import Constants from "expo-constants";
-
-export const getApiBaseUrl = (): string => {
-  const env = __DEV__ ? "development" : "production";
-  return Constants.expoConfig?.extra?.apiBaseUrl[env];
-};
-
-export const restApiUrl = {
-  sendVerificationCode: getApiBaseUrl() + "/send-verification-code",
-};
-
 export const checkIsValidEmailAddress = (emailAddress: string): boolean => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(emailAddress);

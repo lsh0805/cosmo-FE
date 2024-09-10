@@ -56,6 +56,7 @@ export default function RegisterScreen_2({
     setValue,
   });
   const [canRequestSMS, setCanRequestSMS] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const onPressNextButton = async () => {
     const response = await axios.post(restApiUrl.checkVerificationCode, {
@@ -78,6 +79,7 @@ export default function RegisterScreen_2({
   const requestSMSCode = async (deviceId: string) => {
     if (canRequestSMS) {
       try {
+        setLoading(true);
         const response = await axios.post(restApiUrl.sendVerificationCode, {
           email: registerData.userEmail,
         });
@@ -89,6 +91,8 @@ export default function RegisterScreen_2({
         }
       } catch (error) {
         console.error("Failed to request SMS code:", error);
+      } finally {
+        setLoading(false);
       }
     } else if (!canRequestSMS) {
       console.log("Error", "SMS request limit reached.");

@@ -16,6 +16,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Divider } from "react-native-paper";
 import { NativeStackScreenProps } from "react-native-screens/lib/typescript/native-stack/types";
 import Cosmo from "../assets/images/logo.svg";
+import Instagram from "../assets/images/instagram_logo.svg";
 import { StartLinearGradient } from "../components";
 import Button from "../components/Button";
 import { Text } from "../components/Text";
@@ -125,7 +126,7 @@ export default function StartScreen({
                 <Button
                   mode="contained"
                   onPress={() =>
-                    navigation.navigate("Main", { screen: "Friends" })
+                    navigation.navigate("Main", { screen: "Profile" })
                   }
                   textColor="#fff"
                   style={{ marginTop: 30 }}

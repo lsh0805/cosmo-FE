@@ -33,6 +33,7 @@ export default function RegisterScreen_4({
     message: "",
   });
   const { registerData, setRegisterData } = useContext(RegisterContext);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const onUserIdChange = (value: string) => {
     setUserIdError({ occur: false, message: "" });
@@ -45,20 +46,30 @@ export default function RegisterScreen_4({
   };
 
   const onPressNextButton = async () => {
-    const userIdResponse = await axios.post(restApiUrl.checkUserId, {
-      userId: userId,
-    });
-    const userNameResponse = await axios.post(restApiUrl.checkUserName, {
-      userName: userName,
-    });
+    try {
+      setLoading(true);
+      const response = await axios.post(restApiUrl.checkUserIdAndName, {
+        userId: userId,
+        userName: userName,
+      });
 
-    const success = userIdResponse.data.success && userNameResponse.data.sucess;
-    if (success) {
-      setRegisterData({ ...registerData, userId: userId, userName: userName });
-      navigation.navigate("profile");
-    } else {
-      setUserIdError(userIdResponse.data.error);
-      setUserNameError(userIdResponse.data.error);
+      const success =
+        response.data.userId.success && response.data.userName.success;
+      if (success) {
+        setRegisterData({
+          ...registerData,
+          userId: userId,
+          userName: userName,
+        });
+        navigation.navigate("Main", { screen: "Profile" });
+      } else {
+        setUserIdError(response.data.userId.error);
+        setUserNameError(response.data.userName.error);
+      }
+    } catch (error) {
+      console.log("error occur: ", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -97,7 +108,11 @@ export default function RegisterScreen_4({
           />
         </View>
         <View style={styles.center_row_3}>
-          <Button mode="contained" onPress={onPressNextButton}>
+          <Button
+            loading={loading}
+            mode="contained"
+            onPress={onPressNextButton}
+          >
             가입하기
           </Button>
         </View>

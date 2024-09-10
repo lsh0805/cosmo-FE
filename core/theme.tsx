@@ -11,6 +11,7 @@ const fontConfig: Partial<MD3Type> = {
   }),
   fontWeight: "600",
   fontSize: 24,
+  f
   letterSpacing: 0.5,
 };
 

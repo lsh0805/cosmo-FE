@@ -35,6 +35,7 @@ export default function RegisterScreen_3({
   });
   const { registerData, setRegisterData } = useContext(RegisterContext);
   const isFocused = useIsFocused();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const listener = (e: any) => {
     e.preventDefault();
@@ -61,18 +62,24 @@ export default function RegisterScreen_3({
   };
 
   const onPressNextButton = async () => {
-    const response = await axios.post(restApiUrl.checkPassword, {
-      password: password,
-      passwordDup: passwordDup,
-    });
-    const data = response.data;
-    const success = data.success;
-    if (success) {
-      setRegisterData({ ...registerData, password: password });
-      navigation.navigate("Register_4");
-    } else {
-      setPasswordError(data.passwordError);
-      setPasswordDupError(data.passwordDupError);
+    try {
+      const response = await axios.post(restApiUrl.checkPassword, {
+        password: password,
+        passwordDup: passwordDup,
+      });
+      const data = response.data;
+      const success = data.success;
+      if (success) {
+        setRegisterData({ ...registerData, password: password });
+        navigation.navigate("Register_4");
+      } else {
+        setPasswordError(data.passwordError);
+        setPasswordDupError(data.passwordDupError);
+      }
+    } catch (error) {
+      console.log("error occur: ", error);
+    } finally {
+      setLoading(false);
     }
   };
 
