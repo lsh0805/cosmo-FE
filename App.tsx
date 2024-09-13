@@ -6,7 +6,7 @@ import {
 } from "@react-navigation/stack";
 import { registerRootComponent } from "expo";
 import { useFonts } from "expo-font";
-import { Provider } from "react-native-paper";
+import { IconButton, Provider } from "react-native-paper";
 import { RegisterProvider } from "./contexts/RegisterProvider";
 import { theme } from "./core/theme";
 import { MainStack, MainStackParamList } from "./navigation_stack/MainStack";
@@ -16,6 +16,7 @@ import { StartScreen } from "./screens";
 import {
   ChattingListScreen,
   FriendsScreen,
+  MatchingScreen,
   ProfileScreen,
 } from "./screens/MainScreen";
 import {
@@ -24,15 +25,108 @@ import {
   RegisterScreen_3,
   RegisterScreen_4,
 } from "./screens/RegisterScreen";
+import { AntDesign, Feather, MaterialCommunityIcons } from "@expo/vector-icons";
+import SettingScreen from "./screens/MainScreen/SettingScreen";
+import HomeScreen from "./screens/MainScreen/HomeScreen";
 
 const Tab = createBottomTabNavigator<MainStackParamList>();
 
 function BottomTabs() {
   return (
-    <Tab.Navigator initialRouteName="Profile">
-      <Tab.Screen name="Friends" component={FriendsScreen} />
-      <Tab.Screen name="ChattingList" component={ChattingListScreen} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
+    <Tab.Navigator
+      initialRouteName="Profile"
+      sceneContainerStyle={{ backgroundColor: "#000" }}
+      screenOptions={({ navigation }) => ({
+        headerShown: true,
+        headerTitle: "@soo0ng_",
+
+        headerRight: () => {
+          return (
+            <IconButton
+              icon={"cog"}
+              size={26}
+              iconColor="#fff"
+              animated={true}
+              onPressOut={() => {
+                navigation.navigate("Setting");
+              }}
+            />
+          );
+        },
+        headerStyle: {
+          backgroundColor: "#000",
+          borderBottomWidth: 0,
+        },
+        headerTitleStyle: {
+          color: "#fff",
+          backgroundColor: "#000",
+          fontFamily: "NotoSansKR",
+        },
+        tabBarStyle: {
+          height: 70,
+          paddingHorizontal: 5,
+          paddingTop: 0,
+          backgroundColor: "#000",
+          position: "absolute",
+          borderTopWidth: 0,
+        },
+        tabBarShowLabel: false,
+      })}
+    >
+      <Tab.Screen
+        name="Home"
+        options={{
+          tabBarIcon: ({ color }) => (
+            <Feather name="home" color={"#fff"} size={26} />
+          ),
+        }}
+        component={HomeScreen}
+      />
+      <Tab.Screen
+        name="Friends"
+        options={{
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons
+              name="account-group"
+              color={"#fff"}
+              size={26}
+            />
+          ),
+        }}
+        component={FriendsScreen}
+      />
+      <Tab.Screen
+        name="Matching"
+        options={{
+          tabBarIcon: ({ color }) => (
+            <AntDesign name="pluscircleo" color={"#fff"} size={26} />
+          ),
+        }}
+        component={MatchingScreen}
+      />
+      <Tab.Screen
+        name="ChattingList"
+        options={{
+          tabBarIcon: ({ color }) => (
+            <AntDesign name="message1" color={"#fff"} size={26} />
+          ),
+        }}
+        component={ChattingListScreen}
+      />
+      <Tab.Screen
+        name="Profile"
+        options={{
+          tabBarLabel: "",
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons
+              name="account-circle"
+              color={"#fff"}
+              size={26}
+            />
+          ),
+        }}
+        component={ProfileScreen}
+      />
     </Tab.Navigator>
   );
 }
@@ -75,6 +169,39 @@ function MainStackScreens() {
       }}
     >
       <MainStack.Screen name="BottomTabs" component={BottomTabs} />
+      <MainStack.Screen
+        name="Setting"
+        options={({ navigation }) => ({
+          headerShown: true,
+          headerTitle: "Setting",
+          cardStyle: {
+            backgroundColor: "#000",
+          },
+          headerStyle: {
+            backgroundColor: "#000",
+            borderBottomWidth: 0,
+          },
+          headerTitleStyle: {
+            color: "#fff",
+            backgroundColor: "#000",
+            fontFamily: "NotoSansKR",
+          },
+          headerLeft: () => {
+            return (
+              <IconButton
+                icon={"arrow-left"}
+                size={20}
+                iconColor="#fff"
+                animated={true}
+                onPressOut={() => {
+                  navigation.goBack();
+                }}
+              />
+            );
+          },
+        })}
+        component={SettingScreen}
+      />
     </MainStack.Navigator>
   );
 }

@@ -7,9 +7,11 @@ export const getApiBaseUrl = (): string => {
 
 export const restApiUrl = {
   sendVerificationCode: getApiBaseUrl() + "/send-verification-code",
-  checkVerificationCode: getApiBaseUrl() + "/send-verification-code",
+  checkVerificationCode: getApiBaseUrl() + "/check-verification-code",
+  checkUserEmail: getApiBaseUrl() + "/check-user-email",
   checkUserId: getApiBaseUrl() + "/check-user-id",
   checkUserName: getApiBaseUrl() + "/check-user-name",
   checkUserIdAndName: getApiBaseUrl() + "/check-user-id-and-name",
   checkPassword: getApiBaseUrl() + "/check-password",
+  getProfile: getApiBaseUrl() + "/get-profile",
 };

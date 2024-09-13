@@ -22,6 +22,7 @@ import Button from "../components/Button";
 import { Text } from "../components/Text";
 import TextInput from "../components/TextInput";
 import { RegisterStackParamList } from "../navigation_stack/RegisterStack";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 type StartScreenProps = NativeStackScreenProps<RegisterStackParamList, "Start">;
 
