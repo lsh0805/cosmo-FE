@@ -92,39 +92,33 @@ export default function RegisterScreen_3({
       navigation={navigation}
     >
       <View style={styles.center_container}>
-        <View style={styles.center_row_1}>
-          <TextInput
-            label="비밀번호"
-            returnKeyType="next"
-            value={password}
-            onChangeText={onPasswordChange}
-            error={passwordError.occur}
-            errorText={passwordError.message}
-            autoCapitalize="none"
-            textContentType="password"
-            secureTextEntry={true}
-            keyboardType="default"
-          />
-        </View>
-        <View style={styles.center_row_2}>
-          <TextInput
-            label="비밀번호 재입력"
-            returnKeyType="next"
-            value={passwordDup}
-            onChangeText={onPasswordDupChange}
-            error={passwordDupError.occur}
-            errorText={passwordDupError.message}
-            autoCapitalize="none"
-            textContentType="password"
-            secureTextEntry={true}
-            keyboardType="default"
-          />
-        </View>
-        <View style={styles.center_row_3}>
-          <Button mode="contained" onPress={onPressNextButton}>
-            다음
-          </Button>
-        </View>
+        <TextInput
+          label="비밀번호"
+          returnKeyType="next"
+          value={password}
+          onChangeText={onPasswordChange}
+          error={passwordError.occur}
+          errorText={passwordError.message}
+          autoCapitalize="none"
+          textContentType="password"
+          secureTextEntry={true}
+          keyboardType="default"
+        />
+        <TextInput
+          label="비밀번호 재입력"
+          returnKeyType="next"
+          value={passwordDup}
+          onChangeText={onPasswordDupChange}
+          error={passwordDupError.occur}
+          errorText={passwordDupError.message}
+          autoCapitalize="none"
+          textContentType="password"
+          secureTextEntry={true}
+          keyboardType="default"
+        />
+        <Button mode="contained" onPress={onPressNextButton}>
+          다음
+        </Button>
       </View>
     </RegisterLayout>
   );
@@ -137,24 +131,6 @@ const styles = StyleSheet.create({
     alignContent: "flex-start",
     justifyContent: "flex-start",
     flexGrow: 6,
-  },
-  center_row_1: {
-    display: "flex",
-    flexDirection: "row",
-    alignContent: "center",
-    justifyContent: "space-between",
-  },
-  center_row_2: {
-    display: "flex",
-    flexDirection: "row",
-    alignContent: "center",
-    justifyContent: "space-between",
-  },
-  center_row_3: {
-    display: "flex",
-    flexDirection: "row",
-    alignContent: "center",
-    justifyContent: "space-between",
   },
   bottom_container: {
     display: "flex",

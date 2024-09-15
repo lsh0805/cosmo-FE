@@ -28,8 +28,8 @@
     ],
     "extra": {
       "apiBaseUrl": {
-        "development": "http://localhost:8080/api",
-        "production": "http://localhost:8080/api"
+        "development": "http://10.0.2.2:8080/api",
+        "production": "http://10.0.2.2:8080/api"
       }
     }
   }

@@ -7,6 +7,8 @@ import RegisterContext from "../../contexts/RegisterProvider";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RegisterStackParamList } from "../../navigation_stack/RegisterStack";
 import { checkIsValidEmailAddress } from "../../utility/utility";
+import axios from "axios";
+import { restApiUrl } from "../../utility/api";
 
 type RegisterScreenProps = NativeStackScreenProps<
   RegisterStackParamList,
@@ -26,13 +28,28 @@ export default function RegisterScreen_1({
     if (error) setError(false);
   };
 
-  const onPressNextButton = () => {
+  const onPressNextButton = async () => {
+    console.log(restApiUrl.checkEmail);
     if (checkIsValidEmailAddress(email) === false) {
       setError(true);
       return;
+    } else {
+      try {
+        const response = await axios.post(restApiUrl.checkEmail, {
+          email: email,
+        });
+        console.log(response);
+        const success = response.data.success;
+        if (success) {
+          setRegisterData({ ...registerData, userEmail: email });
+          navigation.navigate("Register_2");
+        } else {
+          setError(true);
+        }
+      } catch (error) {
+        console.error(error);
+      }
     }
-    setRegisterData({ ...registerData, userEmail: email });
-    navigation.navigate("Register_2");
   };
 
   return (
@@ -44,24 +61,20 @@ export default function RegisterScreen_1({
       navigation={navigation}
     >
       <View style={styles.container}>
-        <View style={styles.center_row_1}>
-          <TextInput
-            label="이메일"
-            returnKeyType="next"
-            value={email}
-            onChangeText={onEmailInputChange}
-            error={error}
-            errorText="이메일 주소를 확인해주세요."
-            autoCapitalize="none"
-            textContentType="emailAddress"
-            keyboardType="email-address"
-          />
-        </View>
-        <View style={styles.center_row_1}>
-          <Button mode="contained" onPress={onPressNextButton} textColor="#fff">
-            인증 코드 발송
-          </Button>
-        </View>
+        <TextInput
+          label="이메일"
+          returnKeyType="next"
+          value={email}
+          onChangeText={onEmailInputChange}
+          error={error}
+          errorText="이메일 주소를 확인해주세요."
+          autoCapitalize="none"
+          textContentType="emailAddress"
+          keyboardType="email-address"
+        />
+        <Button mode="contained" onPress={onPressNextButton} textColor="#fff">
+          인증 코드 발송
+        </Button>
       </View>
     </RegisterLayout>
   );
@@ -73,15 +86,5 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignContent: "flex-start",
     justifyContent: "flex-start",
-  },
-  center_row_1: {
-    display: "flex",
-    flexDirection: "row",
-    alignContent: "center",
-  },
-  center_row_2: {
-    display: "flex",
-    flexDirection: "row",
-    alignContent: "center",
   },
 });
