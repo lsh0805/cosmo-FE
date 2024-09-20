@@ -7,7 +7,12 @@ import RegisterContext from "../../contexts/RegisterProvider";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RegisterStackParamList } from "../../navigation_stack/RegisterStack";
 import { useIsFocused } from "@react-navigation/native";
-import { restApiUrl } from "../../utility/api";
+import {
+  CheckPasswordDupErrors,
+  CheckPasswordErrors,
+  responseError,
+  restApiUrl,
+} from "../../utility/api";
 import axios from "axios";
 
 type RegisterScreenProps = NativeStackScreenProps<
@@ -15,27 +20,26 @@ type RegisterScreenProps = NativeStackScreenProps<
   "Register_3"
 >;
 
-type ErrorType = {
-  occur: boolean;
-  message: string;
-};
+interface InputState {
+  password: string;
+  passwordDup: string;
+  passwordError: CheckPasswordErrors | undefined;
+  passwordDupError: CheckPasswordDupErrors | undefined;
+  loading: boolean;
+}
 
 export default function RegisterScreen_3({
   navigation,
 }: RegisterScreenProps): React.JSX.Element {
-  const [password, setPassword] = useState("");
-  const [passwordDup, setPasswordDup] = useState("");
-  const [passwordError, setPasswordError] = useState<ErrorType>({
-    occur: false,
-    message: "",
-  });
-  const [passwordDupError, setPasswordDupError] = useState<ErrorType>({
-    occur: false,
-    message: "",
+  const [state, setState] = useState<InputState>({
+    password: "",
+    passwordDup: "",
+    passwordError: undefined,
+    passwordDupError: undefined,
+    loading: false,
   });
   const { registerData, setRegisterData } = useContext(RegisterContext);
   const isFocused = useIsFocused();
-  const [loading, setLoading] = useState<boolean>(false);
 
   const listener = (e: any) => {
     e.preventDefault();
@@ -51,35 +55,73 @@ export default function RegisterScreen_3({
   }, [isFocused, navigation]);
 
   const onPasswordChange = (value: string) => {
-    setPasswordError({ occur: false, message: "" });
-    setPasswordDupError({ occur: false, message: "" });
-    setPassword(value);
+    if (
+      state.passwordDupError ===
+      responseError.checkPasswordDup.NOT_SAME_PASSWORD
+    ) {
+      setState({
+        ...state,
+        passwordError: undefined,
+        passwordDupError: undefined,
+        password: value,
+      });
+    } else {
+      setState({
+        ...state,
+        passwordError: undefined,
+        password: value,
+      });
+    }
   };
 
   const onPasswordDupChange = (value: string) => {
-    setPasswordDupError({ occur: false, message: "" });
-    setPasswordDup(value);
+    setState({
+      ...state,
+      passwordDupError: undefined,
+      passwordDup: value,
+    });
   };
 
   const onPressNextButton = async () => {
     try {
       const response = await axios.post(restApiUrl.checkPassword, {
-        password: password,
-        passwordDup: passwordDup,
+        password: state.password,
+        passwordDup: state.passwordDup,
       });
       const data = response.data;
       const success = data.success;
       if (success) {
-        setRegisterData({ ...registerData, password: password });
+        setRegisterData({ ...registerData, password: state.password });
         navigation.navigate("Register_4");
       } else {
-        setPasswordError(data.passwordError);
-        setPasswordDupError(data.passwordDupError);
+        setState({
+          ...state,
+          passwordError: data.passwordError,
+          passwordDupError: data.passwordDupError,
+        });
       }
     } catch (error) {
       console.log("error occur: ", error);
     } finally {
-      setLoading(false);
+      setState({ ...state, loading: false });
+    }
+  };
+
+  const getErrorMessage = (
+    error: CheckPasswordErrors | CheckPasswordDupErrors | undefined
+  ) => {
+    switch (error) {
+      case responseError.checkPassword.INVALID_PASSWORD: {
+        return "비밀번호는 최소 10자 이상이어야 하며, 영문자와 특수문자 그리고 숫자를 포함해야합니다.";
+      }
+      case responseError.checkPasswordDup.INVALID_PASSWORD_DUP: {
+        return "비밀번호는 최소 10자 이상이어야 하며, 영문자와 특수문자 그리고 숫자를 포함해야합니다.";
+      }
+      case responseError.checkPasswordDup.NOT_SAME_PASSWORD: {
+        return "입력한 비밀번호가 동일하지 않습니다.";
+      }
+      default:
+        return "";
     }
   };
 
@@ -95,10 +137,10 @@ export default function RegisterScreen_3({
         <TextInput
           label="비밀번호"
           returnKeyType="next"
-          value={password}
+          value={state.password}
           onChangeText={onPasswordChange}
-          error={passwordError.occur}
-          errorText={passwordError.message}
+          error={state.passwordError !== undefined}
+          errorText={getErrorMessage(state.passwordError)}
           autoCapitalize="none"
           textContentType="password"
           secureTextEntry={true}
@@ -107,10 +149,10 @@ export default function RegisterScreen_3({
         <TextInput
           label="비밀번호 재입력"
           returnKeyType="next"
-          value={passwordDup}
+          value={state.passwordDup}
           onChangeText={onPasswordDupChange}
-          error={passwordDupError.occur}
-          errorText={passwordDupError.message}
+          error={state.passwordDupError !== undefined}
+          errorText={getErrorMessage(state.passwordDupError)}
           autoCapitalize="none"
           textContentType="password"
           secureTextEntry={true}

@@ -11,7 +11,7 @@ export const restApiUrl = {
   checkVerificationCode: getApiBaseUrl() + "/check-verification-code",
   checkUserId: getApiBaseUrl() + "/check-user-id",
   checkUserName: getApiBaseUrl() + "/check-user-name",
-  checkUserIdAndName: getApiBaseUrl() + "/check-user-id-and-name",
+  checkUserIdAndUserName: getApiBaseUrl() + "/check-userId-and-userName",
   checkPassword: getApiBaseUrl() + "/check-password",
 };
 
@@ -27,15 +27,41 @@ export const responseError = {
     INCORRECT_CODE: "INCORRECT_CODE",
     ALREADY_USED_EMAIL: "ALREADY_USED_EMAIL",
   },
+  checkPassword: {
+    INVALID_PASSWORD: "INVALID_PASSWORD",
+  },
+  checkPasswordDup: {
+    INVALID_PASSWORD_DUP: "INVALID_PASSWORD",
+    NOT_SAME_PASSWORD: "NOT_SAME_PASSWORD",
+  },
+  checkUserId: {
+    INVALID_USER_ID: "INVALID_USER_ID",
+    ALREADY_USED_USER_ID: "ALREADY_USED_USER_ID",
+  },
+  checkUserName: {
+    INVALID_USER_NAME: "INVALID_USER_NAME",
+  },
 };
 
-type CheckVerificationCodeErrors =
+export type CheckVerificationCodeErrors =
   (typeof responseError.checkVerificationCode)[keyof typeof responseError.checkVerificationCode];
 
-type GetVerificationCodeErrors =
+export type GetVerificationCodeErrors =
   (typeof responseError.getVerificationCode)[keyof typeof responseError.getVerificationCode];
 
 export type VerificationErrors =
   | CheckVerificationCodeErrors
   | GetVerificationCodeErrors
   | undefined;
+
+export type CheckPasswordErrors =
+  (typeof responseError.checkPassword)[keyof typeof responseError.checkPassword];
+
+export type CheckPasswordDupErrors =
+  (typeof responseError.checkPasswordDup)[keyof typeof responseError.checkPasswordDup];
+
+export type CheckUserIdErrors =
+  (typeof responseError.checkUserId)[keyof typeof responseError.checkUserId];
+
+export type CheckUserNameErrors =
+  (typeof responseError.checkUserName)[keyof typeof responseError.checkUserName];
