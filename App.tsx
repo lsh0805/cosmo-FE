@@ -35,10 +35,9 @@ function BottomTabs() {
   return (
     <Tab.Navigator
       initialRouteName="Profile"
-      sceneContainerStyle={{ backgroundColor: "#000" }}
       screenOptions={({ navigation }) => ({
         headerShown: true,
-        headerTitle: "@soo0ng_",
+        headerTitle: "@id",
 
         headerRight: () => {
           return (
@@ -55,11 +54,14 @@ function BottomTabs() {
         },
         headerStyle: {
           backgroundColor: "#000",
+          borderBottomColor: "transparent",
+          shadowColor: "transparent",
           borderBottomWidth: 0,
+          elevation: 0,
         },
         headerTitleStyle: {
           color: "#fff",
-          backgroundColor: "#000",
+          backgroundColor: undefined,
           fontFamily: "NotoSansKR",
         },
         tabBarStyle: {
