@@ -31,22 +31,6 @@ export default function ProfileScreen({
             </Text>
           </View>
         </View>
-        <View style={styles.external_SNS_container}>
-          <TextButton labelStyle={styles.SNS_item} onPressOut={() => {}}>
-            <Image
-              style={{ width: 25, height: 25 }}
-              source={require("../../assets/images/facebook_logo.png")}
-            />
-            <Text style={styles.external_SNS_Id}>@id</Text>
-          </TextButton>
-          <TextButton labelStyle={styles.SNS_item} onPressOut={() => {}}>
-            <Image
-              style={{ width: 25, height: 25 }}
-              source={require("../../assets/images/instagram_logo.png")}
-            />
-            <Text style={styles.external_SNS_Id}>@id</Text>
-          </TextButton>
-        </View>
         <View style={styles.user_btn_container}>
           <Button
             icon="account-plus"
@@ -91,28 +75,6 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
-  },
-  external_SNS_container: {
-    gap: 8,
-    flex: 1,
-    justifyContent: "center",
-    flexDirection: "column",
-  },
-  SNS_item: {
-    flexDirection: "row",
-    alignContent: "center",
-    display: "flex",
-    textAlign: "center",
-    alignItems: "center",
-    marginVertical: 5,
-    width: "100%",
-  },
-  external_SNS_Id: {
-    marginLeft: 6,
-    fontSize: 15,
-    height: "100%",
-    textAlign: "center",
-    color: "#fff",
   },
   image: {
     flex: 1,
