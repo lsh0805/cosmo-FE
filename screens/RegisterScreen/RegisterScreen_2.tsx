@@ -21,6 +21,8 @@ import {
   restApiUrl,
   VerificationErrors,
 } from "../../utility/api";
+import { storage_keys } from "../../utility/storage";
+import { decodeJWT } from "../../utility/utility";
 
 type RegisterScreenProps = NativeStackScreenProps<
   RegisterStackParamList,
@@ -35,7 +37,6 @@ interface VerificationState {
 }
 
 const CELL_COUNT = 6;
-const verification_storage = "verification";
 
 export default function RegisterScreen_2({
   navigation,
@@ -77,22 +78,22 @@ export default function RegisterScreen_2({
   const onPressNextButton = async () => {
     // 인증 코드를 완전히 입력하지 않았을 경우
     if (verificationState.value.length < CELL_COUNT) {
-      setVerificationState({
-        ...verificationState,
+      setVerificationState((prevState) => ({
+        ...prevState,
         error: responseError.checkVerificationCode.INCOMPLETE_CODE,
-      });
+      }));
       return;
     }
 
     // 인증 코드를 발급 받았을 때 함께 받은 uuid를 가져옴
-    const uuid = await SecureStore.getItemAsync(verification_storage);
+    const uuid = await SecureStore.getItemAsync(storage_keys.VerificationId);
 
     // 기기에 UUID가 저장되어있지 않을 경우
     if (uuid === null) {
-      setVerificationState({
+      setVerificationState((prevState) => ({
         ...verificationState,
         error: responseError.checkVerificationCode.NOT_FOUND_UUID,
-      });
+      }));
       return;
     }
 
@@ -103,20 +104,22 @@ export default function RegisterScreen_2({
         code: verificationState.value,
         uuid: uuid,
       });
-      const { success, count } = response.data;
+      const { success, count, jwt } = response.data;
 
       // 인증에 성공하였을 경우
       if (success) {
+        console.log(decodeJWT(jwt));
+        await SecureStore.setItemAsync(storage_keys.VerificationToken, jwt);
         navigation.navigate("Register_3");
       }
       // 인증에 실패하였을 경우, 인증 실패에 따른 처리
       else {
         const error: VerificationErrors = response.data.error;
-        setVerificationState({
-          ...verificationState,
+        setVerificationState((prevState) => ({
+          ...prevState,
           incorrectCount: count,
           error: error,
-        });
+        }));
       }
     } catch (error) {
       console.error(error);
@@ -126,12 +129,12 @@ export default function RegisterScreen_2({
   };
 
   const onCodeCellChange = (value: string) => {
-    setVerificationState({
-      ...verificationState,
+    setVerificationState((prevState) => ({
+      ...prevState,
       error: undefined,
       value: value,
       resend: false,
-    });
+    }));
   };
 
   const requestAuthCode = async () => {
@@ -150,16 +153,16 @@ export default function RegisterScreen_2({
 
       const { success, uuid, error } = response.data;
       if (success) {
-        await SecureStore.setItemAsync(verification_storage, uuid);
+        await SecureStore.setItemAsync(storage_keys.VerificationId, uuid);
       } else if (
         error ===
         responseError.getVerificationCode.EXCEEDED_MAXIMUM_REQUEST_COUNT
       ) {
-        setVerificationState({
-          ...verificationState,
+        setVerificationState((prevState) => ({
+          ...prevState,
           error:
             responseError.getVerificationCode.EXCEEDED_MAXIMUM_REQUEST_COUNT,
-        });
+        }));
         console.log("Error", "You have exceeded the request limit.");
       }
     } catch (error) {

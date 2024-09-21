@@ -6,13 +6,15 @@ export const getApiBaseUrl = (): string => {
 };
 
 export const restApiUrl = {
-  getVerificationCode: getApiBaseUrl() + "/get-verification-code",
-  checkEmail: getApiBaseUrl() + "/check-email",
-  checkVerificationCode: getApiBaseUrl() + "/check-verification-code",
-  checkUserId: getApiBaseUrl() + "/check-user-id",
-  checkUserName: getApiBaseUrl() + "/check-user-name",
-  checkUserIdAndUserName: getApiBaseUrl() + "/check-userId-and-userName",
-  checkPassword: getApiBaseUrl() + "/check-password",
+  getVerificationCode: getApiBaseUrl() + "/auth/get-verification-code",
+  checkEmail: getApiBaseUrl() + "/auth/check-email",
+  checkVerificationCode: getApiBaseUrl() + "/auth/check-verification-code",
+  checkUserId: getApiBaseUrl() + "/auth/check-user-id",
+  checkUserName: getApiBaseUrl() + "/auth/check-user-name",
+  checkUserIdAndUserName: getApiBaseUrl() + "/auth/check-userId-and-userName",
+  checkPassword: getApiBaseUrl() + "/auth/check-password",
+  signIn: getApiBaseUrl() + "/auth/sign-in",
+  signUp: getApiBaseUrl() + "/auth/sign-up",
 };
 
 export const responseError = {

@@ -5,6 +5,8 @@ import {
   BottomSheetModalProvider,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
+import axios from "axios";
+import * as SecureStore from "expo-secure-store";
 import React, { useCallback, useMemo, useRef, useState } from "react";
 import {
   GestureResponderEvent,
@@ -16,29 +18,39 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Divider } from "react-native-paper";
 import { NativeStackScreenProps } from "react-native-screens/lib/typescript/native-stack/types";
 import Cosmo from "../assets/images/logo.svg";
-import Instagram from "../assets/images/instagram_logo.svg";
 import { StartLinearGradient } from "../components";
 import Button from "../components/Button";
 import { Text } from "../components/Text";
 import TextInput from "../components/TextInput";
 import { RegisterStackParamList } from "../navigation_stack/RegisterStack";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { restApiUrl } from "../utility/api";
+import { storage_keys } from "../utility/storage";
 
 type StartScreenProps = NativeStackScreenProps<RegisterStackParamList, "Start">;
+
+interface State {
+  language: string;
+  email: string;
+  password: string;
+  isInvalid: boolean;
+  loading: boolean;
+}
 
 export default function StartScreen({
   navigation,
 }: StartScreenProps): React.JSX.Element {
   const { width, height } = useWindowDimensions();
-  const [langugae, setLanguage] = useState<string>("한국어");
-  const [phoneNumber, setPhoneNumber] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [isInvalidIdPassword, setIsInvalidIdPassword] =
-    useState<boolean>(false);
+  const [state, setState] = useState<State>({
+    language: "한국어",
+    email: "",
+    password: "",
+    isInvalid: false,
+    loading: false,
+  });
 
-  const selectLanguage = (e: GestureResponderEvent, lang: string) => {
+  const selectLanguage = (e: GestureResponderEvent, language: string) => {
     bottomSheetModalRef.current?.close();
-    setLanguage(lang);
+    setState((prevState) => ({ ...prevState, language }));
   };
 
   const renderBackdrop = useCallback(
@@ -52,6 +64,7 @@ export default function StartScreen({
     ),
     []
   );
+
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   // variables
@@ -61,9 +74,41 @@ export default function StartScreen({
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
   }, []);
+
   const handleSheetChanges = useCallback((index: number) => {
     console.log("handleSheetChanges", index);
   }, []);
+
+  const onChangeEmailInput = (email: string) => {
+    setState((prevState) => ({ ...prevState, email, isInvalid: false }));
+  };
+
+  const onChangePasswordInput = (password: string) => {
+    setState((prevState) => ({ ...prevState, password, isInvalid: false }));
+  };
+
+  const onPressSignInButton = async () => {
+    try {
+      setState((prevState) => ({ ...prevState, loading: true }));
+      const response = await axios.post(restApiUrl.signIn, {
+        email: state.email,
+        password: state.password,
+      });
+      console.log(response.data);
+      const { success, token } = response.data;
+      if (success) {
+        console.log(token);
+        await SecureStore.setItemAsync(storage_keys.AuthenticationToken, token);
+        navigation.navigate("Main", { screen: "Profile" });
+      } else {
+        setState((prevState) => ({ ...prevState, isInvalid: true }));
+      }
+    } catch (error) {
+      console.log("error occur: ", error);
+    } finally {
+      setState((prevState) => ({ ...prevState, loading: false }));
+    }
+  };
 
   return (
     <GestureHandlerRootView>
@@ -96,28 +141,28 @@ export default function StartScreen({
                     textColor="#fff"
                     onPress={handlePresentModalPress}
                   >
-                    {langugae}
+                    {state.language}
                   </Button>
                 </View>
               </View>
               <View style={[styles.auth_container, { width: "100%" }]}>
                 <TextInput
-                  label="휴대폰 번호"
+                  label="이메일 주소"
                   returnKeyType="next"
-                  value={phoneNumber}
-                  onChangeText={setPhoneNumber}
-                  error={isInvalidIdPassword}
+                  value={state.email}
+                  onChangeText={onChangeEmailInput}
+                  error={state.isInvalid}
                   errorText=""
                   autoCapitalize="none"
-                  textContentType="telephoneNumber"
-                  keyboardType="number-pad"
+                  textContentType="emailAddress"
+                  keyboardType="email-address"
                 />
                 <TextInput
                   label="비밀번호"
                   returnKeyType="next"
-                  value={password}
-                  onChangeText={setPassword}
-                  error={isInvalidIdPassword}
+                  value={state.password}
+                  onChangeText={onChangePasswordInput}
+                  error={state.isInvalid}
                   errorText="잘못된 아이디 혹은 비밀번호입니다."
                   autoCapitalize="none"
                   textContentType="password"
@@ -126,10 +171,9 @@ export default function StartScreen({
                 />
                 <Button
                   mode="contained"
-                  onPress={() =>
-                    navigation.navigate("Main", { screen: "Profile" })
-                  }
+                  onPress={onPressSignInButton}
                   textColor="#fff"
+                  loading={state.loading}
                   style={{ marginTop: 30 }}
                 >
                   로그인
@@ -185,7 +229,6 @@ export default function StartScreen({
                     日本語
                   </Button>
                 </View>
-
                 <Divider style={styles.divider} />
               </View>
             </BottomSheetView>

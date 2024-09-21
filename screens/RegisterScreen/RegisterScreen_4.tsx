@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import * as SecureStore from "expo-secure-store";
 import { RegisterLayout } from "../../components";
 import Button from "../../components/Button";
 import TextInput from "../../components/TextInput";
@@ -13,6 +14,7 @@ import {
   responseError,
   restApiUrl,
 } from "../../utility/api";
+import { storage_keys } from "../../utility/storage";
 
 type RegisterScreenProps = NativeStackScreenProps<
   RegisterStackParamList,
@@ -40,41 +42,68 @@ export default function RegisterScreen_4({
   const { registerData, setRegisterData } = useContext(RegisterContext);
 
   const onUserIdChange = (value: string) => {
-    setState({ ...state, userId: value, userIdError: undefined });
+    setState((prevState) => ({
+      ...prevState,
+      userId: value,
+      userIdError: undefined,
+    }));
   };
 
   const onUserNameChange = (value: string) => {
-    setState({ ...state, userName: value, userNameError: undefined });
+    setState((prevState) => ({
+      ...prevState,
+      userName: value,
+      userNameError: undefined,
+    }));
+  };
+
+  const signUp = async () => {
+    try {
+      const response = await axios.post(restApiUrl.signUp, {
+        jwt: await SecureStore.getItemAsync(storage_keys.VerificationToken),
+        email: registerData.userEmail,
+        userId: state.userId,
+        userName: state.userName,
+        password: registerData.password,
+      });
+
+      const success = response.data.success;
+      console.log(success);
+      if (success) {
+        navigation.navigate("Main", { screen: "Profile" });
+      }
+    } catch (error) {
+      console.log("error occur: ", error);
+    }
   };
 
   const onPressNextButton = async () => {
     try {
-      setState({ ...state, loading: true });
+      setState((prevState) => ({ ...prevState, loading: true }));
       const response = await axios.post(restApiUrl.checkUserIdAndUserName, {
         userId: state.userId,
         userName: state.userName,
       });
 
-      const success =
-        response.data.userId.success && response.data.userName.success;
+      const { success, userIdError, userNameError } = response.data;
+      console.log(response.data);
       if (success) {
         setRegisterData({
           ...registerData,
           userId: state.userId,
           userName: state.userName,
         });
-        navigation.navigate("Main", { screen: "Profile" });
+        signUp();
       } else {
         setRegisterData({
           ...registerData,
-          userId: response.data.userId.error,
-          userName: response.data.userName.error,
         });
+        setState((prevState) => ({ ...prevState, userIdError, userNameError }));
       }
     } catch (error) {
       console.log("error occur: ", error);
     } finally {
-      setState({ ...state, loading: false });
+      setState((prevState) => ({ ...prevState, loading: false }));
     }
   };
 
@@ -100,7 +129,7 @@ export default function RegisterScreen_4({
     <RegisterLayout
       title={"계정 정보 설정"}
       description={
-        "당신의 아이디와 이름을 입력해주세요. 아이디와 이름은 다른 유저에게 공개됩니다. 아이디는 다른 사용자와 중복될 수 없습니다."
+        "당신의 아이디와 이름을 입력해주세요. 아이디와 이름은 다른 사용자에게 공개됩니다. 아이디는 다른 사용자와 중복될 수 없습니다."
       }
       navigation={navigation}
     >
@@ -124,7 +153,7 @@ export default function RegisterScreen_4({
             value={state.userName}
             onChangeText={onUserNameChange}
             error={state.userNameError !== undefined}
-            errorText={getErrorMessage(state.userIdError)}
+            errorText={getErrorMessage(state.userNameError)}
             autoCapitalize="none"
             textContentType="nickname"
             keyboardType="default"

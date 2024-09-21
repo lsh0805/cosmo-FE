@@ -59,18 +59,18 @@ export default function RegisterScreen_3({
       state.passwordDupError ===
       responseError.checkPasswordDup.NOT_SAME_PASSWORD
     ) {
-      setState({
-        ...state,
+      setState((prevState) => ({
+        ...prevState,
         passwordError: undefined,
         passwordDupError: undefined,
         password: value,
-      });
+      }));
     } else {
-      setState({
-        ...state,
+      setState((prevState) => ({
+        ...prevState,
         passwordError: undefined,
         password: value,
-      });
+      }));
     }
   };
 
@@ -94,16 +94,16 @@ export default function RegisterScreen_3({
         setRegisterData({ ...registerData, password: state.password });
         navigation.navigate("Register_4");
       } else {
-        setState({
-          ...state,
+        setState((prevState) => ({
+          ...prevState,
           passwordError: data.passwordError,
           passwordDupError: data.passwordDupError,
-        });
+        }));
       }
     } catch (error) {
       console.log("error occur: ", error);
     } finally {
-      setState({ ...state, loading: false });
+      setState((prevState) => ({ ...prevState, loading: false }));
     }
   };
 
@@ -112,10 +112,10 @@ export default function RegisterScreen_3({
   ) => {
     switch (error) {
       case responseError.checkPassword.INVALID_PASSWORD: {
-        return "비밀번호는 최소 10자 이상이어야 하며, 영문자와 특수문자 그리고 숫자를 포함해야합니다.";
+        return "비밀번호는 최소 10자 이상이어야 하며, 영문자, 특수문자, 숫자를 포함해야합니다.";
       }
       case responseError.checkPasswordDup.INVALID_PASSWORD_DUP: {
-        return "비밀번호는 최소 10자 이상이어야 하며, 영문자와 특수문자 그리고 숫자를 포함해야합니다.";
+        return "비밀번호는 최소 10자 이상이어야 하며, 영문자, 특수문자, 숫자를 포함해야합니다.";
       }
       case responseError.checkPasswordDup.NOT_SAME_PASSWORD: {
         return "입력한 비밀번호가 동일하지 않습니다.";
@@ -129,7 +129,7 @@ export default function RegisterScreen_3({
     <RegisterLayout
       title={"비밀번호 설정"}
       description={
-        "계정 로그인에 사용할 비밀번호를 입력해주세요. 계정의 보안을 위해 영문자와 숫자 그리고 특수문자를 포함하여 8자 이상으로 설정해야 합니다."
+        "계정 로그인에 사용할 비밀번호를 입력해주세요. 계정의 보안을 위해 영문자, 숫자, 특수문자를 포함하여 10자 이상으로 설정해야 합니다."
       }
       navigation={navigation}
     >
