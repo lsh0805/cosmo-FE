@@ -1,3 +1,5 @@
+import { Buffer } from "buffer";
+
 export const checkIsValidEmailAddress = (emailAddress: string): boolean => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(emailAddress);
@@ -13,4 +15,8 @@ export const formattedTime = (seconds: number): string => {
       : remain_seconds.toString();
   const f_time = f_minute + ":" + f_seconds;
   return f_time;
+};
+
+export const decodeJWT = (encodedJWT: string) => {
+  return JSON.parse(Buffer.from(encodedJWT.split(".")[1], "base64").toString());
 };
