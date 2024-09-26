@@ -1,17 +1,15 @@
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useEffect } from "react";
 import { StyleSheet, TouchableHighlight, View } from "react-native";
-import { MainStackParamList } from "../../navigation_stack/MainStack";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Divider, Text } from "react-native-paper";
-import { Button } from "../../components";
-import SettingItemButton from "../../components/SettingItemButton";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { SettingStackParamList } from "../../navigation_stack/SettingStack";
 
-type SettingProps = NativeStackScreenProps<MainStackParamList, "Setting">;
+type SettingProps = NativeStackScreenProps<SettingStackParamList, "Setting">;
 type ItemType = {
   label: string;
   icon: React.ComponentProps<typeof MaterialCommunityIcons>["name"];
+  onPress: Function;
 };
 type SectionType = {
   header: string;
@@ -24,14 +22,23 @@ const sections: SectionType[] = [
       {
         label: "프로필 설정",
         icon: "account-circle-outline",
+        onPress: (navigation: SettingProps["navigation"]) => {
+          navigation.navigate("ProfileSetting");
+        },
       },
       {
         label: "친구 관리",
         icon: "account-multiple",
+        onPress: (navigation: SettingProps["navigation"]) => {
+          navigation.navigate("ProfileSetting");
+        },
       },
       {
         label: "계정 설정",
         icon: "account-lock-outline",
+        onPress: (navigation: SettingProps["navigation"]) => {
+          navigation.navigate("ProfileSetting");
+        },
       },
     ],
   },
@@ -41,14 +48,23 @@ const sections: SectionType[] = [
       {
         label: "테마",
         icon: "theme-light-dark",
+        onPress: (navigation: SettingProps["navigation"]) => {
+          navigation.navigate("ProfileSetting");
+        },
       },
       {
         label: "알림",
         icon: "bell-outline",
+        onPress: (navigation: SettingProps["navigation"]) => {
+          navigation.navigate("ProfileSetting");
+        },
       },
       {
         label: "언어",
         icon: "earth",
+        onPress: (navigation: SettingProps["navigation"]) => {
+          navigation.navigate("ProfileSetting");
+        },
       },
     ],
   },
@@ -66,18 +82,21 @@ export default function SettingScreen({
       <View>
         {sections.map(({ header, items }, index) => {
           return (
-            <View>
+            <View key={index}>
               {index !== 0 ? (
                 <Divider style={{ backgroundColor: "#666" }} />
               ) : undefined}
               <View style={styles.section}>
                 <Text style={styles.section_title}>{header}</Text>
-                {items.map(({ label, icon }) => {
+                {items.map(({ label, icon, onPress }, index) => {
                   return (
                     <TouchableHighlight
+                      key={index}
                       activeOpacity={0.8}
                       underlayColor="#222"
-                      onPress={() => {}}
+                      onPress={() => {
+                        onPress(navigation);
+                      }}
                     >
                       <View style={styles.btn_content}>
                         <MaterialCommunityIcons

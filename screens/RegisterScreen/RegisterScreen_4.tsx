@@ -70,7 +70,7 @@ export default function RegisterScreen_4({
       const success = response.data.success;
       console.log(success);
       if (success) {
-        navigation.navigate("Main", { screen: "Profile" });
+        navigation.navigate("MainStack", { screen: "Profile" });
       }
     } catch (error) {
       console.log("error occur: ", error);
