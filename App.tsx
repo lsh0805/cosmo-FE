@@ -26,8 +26,10 @@ import {
   RegisterScreen_4,
 } from "./screens/RegisterScreen";
 import { AntDesign, Feather, MaterialCommunityIcons } from "@expo/vector-icons";
-import SettingScreen from "./screens/MainScreen/SettingScreen";
+import SettingScreen from "./screens/SettingScreen/SettingScreen";
 import HomeScreen from "./screens/MainScreen/HomeScreen";
+import { SettingStack } from "./navigation_stack/SettingStack";
+import ProfileSettingScreen from "./screens/SettingScreen/ProfileSettingScreen";
 
 const Tab = createBottomTabNavigator<MainStackParamList>();
 
@@ -46,8 +48,8 @@ function BottomTabs() {
               size={26}
               iconColor="#fff"
               animated={true}
-              onPressOut={() => {
-                navigation.navigate("Setting");
+              onPress={() => {
+                navigation.navigate("SettingStack");
               }}
             />
           );
@@ -171,9 +173,17 @@ function MainStackScreens() {
       }}
     >
       <MainStack.Screen name="BottomTabs" component={BottomTabs} />
-      <MainStack.Screen
-        name="Setting"
-        options={({ navigation }) => ({
+      <MainStack.Screen name="SettingStack" component={SettingStackScreens} />
+    </MainStack.Navigator>
+  );
+}
+
+function SettingStackScreens() {
+  return (
+    <SettingStack.Navigator
+      initialRouteName="Setting"
+      screenOptions={({ navigation }) => {
+        return {
           headerShown: true,
           headerTitle: "Setting",
           cardStyle: {
@@ -204,10 +214,20 @@ function MainStackScreens() {
               />
             );
           },
-        })}
-        component={SettingScreen}
+          transitionSpec: {
+            open: TransitionSpecs.FadeInFromBottomAndroidSpec,
+            close: TransitionSpecs.FadeOutToBottomAndroidSpec,
+          },
+          cardStyleInterpolator: CardStyleInterpolators.forFadeFromCenter,
+        };
+      }}
+    >
+      <SettingStack.Screen name="Setting" component={SettingScreen} />
+      <SettingStack.Screen
+        name="ProfileSetting"
+        component={ProfileSettingScreen}
       />
-    </MainStack.Navigator>
+    </SettingStack.Navigator>
   );
 }
 
@@ -225,7 +245,7 @@ export default function App() {
     <Provider theme={theme}>
       <NavigationContainer>
         <RootStack.Navigator
-          initialRouteName="Register"
+          initialRouteName="RegisterStack"
           screenOptions={{
             headerShown: false,
             transitionSpec: {
@@ -235,8 +255,11 @@ export default function App() {
             cardStyleInterpolator: CardStyleInterpolators.forFadeFromCenter,
           }}
         >
-          <RootStack.Screen name="Register" component={RegisterStackScreens} />
-          <RootStack.Screen name="Main" component={MainStackScreens} />
+          <RootStack.Screen
+            name="RegisterStack"
+            component={RegisterStackScreens}
+          />
+          <RootStack.Screen name="MainStack" component={MainStackScreens} />
         </RootStack.Navigator>
       </NavigationContainer>
     </Provider>

@@ -1,5 +1,12 @@
 import React from "react";
-import { View, StyleSheet, Text, Platform } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  Platform,
+  StyleProp,
+  TextStyle,
+} from "react-native";
 import {
   configureFonts,
   TextInput as Input,
@@ -12,6 +19,7 @@ interface TextInputProps extends InputProps {
   error: boolean;
   errorText?: string;
   description?: string;
+  style?: StyleProp<TextStyle>;
 }
 
 const fontConfig: Partial<MD3Type> = {
@@ -30,12 +38,13 @@ const TextInput: React.FC<TextInputProps> = ({
   error,
   errorText,
   description,
+  style,
   ...props
 }) => {
   return (
     <View style={styles.container}>
       <Input
-        style={styles.input}
+        style={[styles.input, style]}
         selectionColor={theme.colors.primary}
         mode="outlined"
         textColor="#fff"

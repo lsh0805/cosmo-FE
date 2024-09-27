@@ -88,7 +88,7 @@ export default function StartScreen({
   };
 
   const onPressSignInButton = async () => {
-    navigation.navigate("Main", { screen: "Profile" });
+    navigation.navigate("MainStack", { screen: "Profile" });
     return;
     try {
       setState((prevState) => ({ ...prevState, loading: true }));
@@ -101,7 +101,7 @@ export default function StartScreen({
       if (success) {
         console.log(token);
         await SecureStore.setItemAsync(storage_keys.AuthenticationToken, token);
-        navigation.navigate("Main", { screen: "Profile" });
+        navigation.navigate("MainStack", { screen: "Profile" });
       } else {
         setState((prevState) => ({ ...prevState, isInvalid: true }));
       }
