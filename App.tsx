@@ -182,6 +182,9 @@ function MainStackScreens() {
           headerStyle: {
             backgroundColor: "#000",
             borderBottomWidth: 0,
+            borderBottomColor: "transparent",
+            shadowColor: "transparent",
+            elevation: 0,
           },
           headerTitleStyle: {
             color: "#fff",

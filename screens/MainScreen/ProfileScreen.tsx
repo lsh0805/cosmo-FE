@@ -35,8 +35,7 @@ export default function ProfileScreen({
           <Button
             icon="account-plus"
             mode="contained"
-            contentStyle={{ backgroundColor: "#222" }}
-            style={{ width: "100%", backgroundColor: "none" }}
+            buttonColor="#222"
             onPress={() => console.log("Pressed")}
           >
             친구 추가
@@ -109,8 +108,6 @@ const styles = StyleSheet.create({
   },
   user_btn_container: {
     display: "flex",
-    justifyContent: "space-around",
-    flexDirection: "row",
     flex: 1,
   },
   reputation_container: {

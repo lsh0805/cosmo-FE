@@ -88,6 +88,8 @@ export default function StartScreen({
   };
 
   const onPressSignInButton = async () => {
+    navigation.navigate("Main", { screen: "Profile" });
+    return;
     try {
       setState((prevState) => ({ ...prevState, loading: true }));
       const response = await axios.post(restApiUrl.signIn, {
