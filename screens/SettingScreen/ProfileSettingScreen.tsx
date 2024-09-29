@@ -1,8 +1,10 @@
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { SettingStackParamList } from "../../navigation_stack/SettingStack";
-import { StyleSheet, View } from "react-native";
-import { Avatar, IconButton, Text } from "react-native-paper";
+import { StyleSheet, TouchableWithoutFeedback, View } from "react-native";
+import { TouchableHighlight } from "react-native-gesture-handler";
+import { Avatar, Text } from "react-native-paper";
 import { Button, TextInput } from "../../components";
+import { SettingStackParamList } from "../../navigation_stack/SettingStack";
 
 let profile_img = require("../../assets/images/profile_image.png");
 
@@ -21,27 +23,29 @@ export default function ProfileSettingScreen({
           <View style={styles.section_header}>
             <Text style={styles.section_title}>프로필 사진</Text>
           </View>
-          <View style={{ flexDirection: "column" }}>
-            <View style={{ flexDirection: "row", justifyContent: "center" }}>
-              <Avatar.Image size={130} source={profile_img} />
-            </View>
-            <View
-              style={{ flexDirection: "row", justifyContent: "space-around" }}
-            >
-              <Button
-                style={{ width: "40%" }}
-                mode="contained"
-                buttonColor="#06a"
+          <View style={{ alignItems: "center", justifyContent: "center" }}>
+            <View style={{ position: "relative" }}>
+              <TouchableWithoutFeedback
+                onPress={() => {
+                  console.log("Pressed");
+                }}
               >
-                변경하기
-              </Button>
-              <Button
-                style={{ width: "40%" }}
-                mode="contained"
-                buttonColor="#d20"
+                <Avatar.Image size={130} source={profile_img} />
+              </TouchableWithoutFeedback>
+              <TouchableHighlight
+                activeOpacity={0.8}
+                underlayColor="#0065ff"
+                onPress={() => {
+                  navigation.navigate("ProfileImageEdit");
+                }}
+                style={styles.profile_img_edit}
               >
-                삭제하기
-              </Button>
+                <MaterialCommunityIcons
+                  name="pencil-outline"
+                  color="#fff"
+                  size={30}
+                />
+              </TouchableHighlight>
             </View>
           </View>
         </View>
@@ -101,5 +105,16 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 18,
     fontWeight: "bold",
+  },
+  profile_img_edit: {
+    width: 50,
+    height: 50,
+    borderRadius: 9999,
+    position: "absolute",
+    backgroundColor: "#007bff",
+    right: -8,
+    bottom: -12,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

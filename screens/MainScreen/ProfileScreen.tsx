@@ -1,8 +1,8 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useEffect } from "react";
-import { Image, StyleSheet, View } from "react-native";
-import { Avatar, IconButton, MD3Colors, Text } from "react-native-paper";
-import { Button, TextButton } from "../../components";
+import { StyleSheet, View } from "react-native";
+import { Avatar, Text } from "react-native-paper";
+import { Button } from "../../components";
 import { MainStackParamList } from "../../navigation_stack/MainStack";
 
 let profile_img = require("../../assets/images/profile_image.png");

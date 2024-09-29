@@ -30,6 +30,7 @@ import SettingScreen from "./screens/SettingScreen/SettingScreen";
 import HomeScreen from "./screens/MainScreen/HomeScreen";
 import { SettingStack } from "./navigation_stack/SettingStack";
 import ProfileSettingScreen from "./screens/SettingScreen/ProfileSettingScreen";
+import ProfileImageEditScreen from "./screens/SettingScreen/ProfileImageEditScreen";
 
 const Tab = createBottomTabNavigator<MainStackParamList>();
 
@@ -226,6 +227,10 @@ function SettingStackScreens() {
       <SettingStack.Screen
         name="ProfileSetting"
         component={ProfileSettingScreen}
+      />
+      <SettingStack.Screen
+        name="ProfileImageEdit"
+        component={ProfileImageEditScreen}
       />
     </SettingStack.Navigator>
   );
