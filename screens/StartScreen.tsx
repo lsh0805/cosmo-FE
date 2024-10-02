@@ -25,6 +25,7 @@ import TextInput from "../components/TextInput";
 import { RegisterStackParamList } from "../navigation_stack/RegisterStack";
 import { restApiUrl } from "../utility/api";
 import { storage_keys } from "../utility/storage";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 type StartScreenProps = NativeStackScreenProps<RegisterStackParamList, "Start">;
 
@@ -48,7 +49,7 @@ export default function StartScreen({
     loading: false,
   });
 
-  const selectLanguage = (e: GestureResponderEvent, language: string) => {
+  const selectLanguage = (language: string) => {
     bottomSheetModalRef.current?.close();
     setState((prevState) => ({ ...prevState, language }));
   };
@@ -131,20 +132,30 @@ export default function StartScreen({
 
                 <View style={styles.language_select_container}>
                   <Button
-                    icon="chevron-down"
-                    mode="text"
-                    style={{ margin: 0 }}
+                    icon={
+                      <MaterialCommunityIcons
+                        name="chevron-down"
+                        color={"#fff"}
+                        size={12}
+                      />
+                    }
+                    mode="contained"
+                    contentType="icon-text"
+                    style={{
+                      margin: 0,
+                      backgroundColor: "rgba(0,0,0,0)",
+                    }}
                     labelStyle={{
                       fontSize: 15,
+                      flex: 0,
                     }}
                     contentStyle={{
                       flexDirection: "row-reverse",
+                      columnGap: 6,
                     }}
-                    textColor="#fff"
-                    onPress={handlePresentModalPress}
-                  >
-                    {state.language}
-                  </Button>
+                    label={state.language}
+                    onPress={() => handlePresentModalPress()}
+                  />
                 </View>
               </View>
               <View style={[styles.auth_container, { width: "100%" }]}>
@@ -173,25 +184,21 @@ export default function StartScreen({
                 />
                 <Button
                   mode="contained"
-                  onPress={onPressSignInButton}
-                  textColor="#fff"
-                  loading={state.loading}
-                  style={{ marginTop: 30 }}
-                >
-                  로그인
-                </Button>
+                  contentType="text"
+                  onPress={() => onPressSignInButton()}
+                  label={"로그인"}
+                  style={{ marginTop: 50, width: "100%" }}
+                />
               </View>
               <View style={(styles.bottom_container, { width: "100%" })}>
                 <Button
                   mode="outlined"
-                  textColor="#fff"
-                  style={[{ borderColor: "#fff", borderWidth: 1 }]}
+                  contentType="text"
+                  label={"가입하기"}
                   onPress={() => {
                     navigation.navigate("Register_1");
                   }}
-                >
-                  가입하기
-                </Button>
+                />
               </View>
             </View>
           </View>
@@ -207,29 +214,29 @@ export default function StartScreen({
                 <Divider style={styles.divider} />
                 <View style={{ width: "100%" }}>
                   <Button
-                    mode="text"
-                    onPress={(e) => selectLanguage(e, "한국어")}
-                  >
-                    한국어
-                  </Button>
+                    mode="raw"
+                    label="한국어"
+                    labelStyle={{ color: "#000" }}
+                    onPress={() => selectLanguage("한국어")}
+                  />
                 </View>
                 <Divider style={styles.divider} />
                 <View style={{ width: "100%" }}>
                   <Button
-                    mode="text"
-                    onPress={(e) => selectLanguage(e, "English")}
-                  >
-                    English
-                  </Button>
+                    mode="raw"
+                    label="English"
+                    labelStyle={{ color: "#000" }}
+                    onPress={() => selectLanguage("English")}
+                  />
                 </View>
                 <Divider style={styles.divider} />
                 <View style={{ width: "100%" }}>
                   <Button
-                    mode="text"
-                    onPress={(e) => selectLanguage(e, "日本語")}
-                  >
-                    日本語
-                  </Button>
+                    mode="raw"
+                    label="日本語"
+                    labelStyle={{ color: "#000" }}
+                    onPress={() => selectLanguage("日本語")}
+                  />
                 </View>
                 <Divider style={styles.divider} />
               </View>
