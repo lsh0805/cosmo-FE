@@ -72,9 +72,11 @@ export default function RegisterScreen_1({
           textContentType="emailAddress"
           keyboardType="email-address"
         />
-        <Button mode="contained" onPress={onPressNextButton} textColor="#fff">
-          인증 코드 발송
-        </Button>
+        <Button
+          mode="contained"
+          onPress={onPressNextButton}
+          label="인증 코드 발송"
+        />
       </View>
     </RegisterLayout>
   );
@@ -86,5 +88,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignContent: "flex-start",
     justifyContent: "flex-start",
+    rowGap: 22,
   },
 });

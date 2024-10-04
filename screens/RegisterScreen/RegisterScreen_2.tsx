@@ -10,7 +10,7 @@ import {
   useClearByFocusCell,
 } from "react-native-confirmation-code-field";
 import { TextInput } from "react-native-paper";
-import { RegisterLayout, TextButton } from "../../components";
+import { RegisterLayout } from "../../components";
 import Button from "../../components/Button";
 import { Text } from "../../components/Text";
 import RegisterContext from "../../contexts/RegisterProvider";
@@ -112,7 +112,7 @@ export default function RegisterScreen_2({
         await SecureStore.setItemAsync(storage_keys.VerificationToken, jwt);
         navigation.navigate("Register_3");
       }
-      // 인증에 실패하였을 경우, 인증 실패에 따른 처리
+      // 인증에 실패하였을 경우
       else {
         const error: VerificationErrors = response.data.error;
         setVerificationState((prevState) => ({
@@ -260,16 +260,17 @@ export default function RegisterScreen_2({
             )}
           />
           {getStatusMessage()}
-          <TextButton mode="text" onPress={onPressRequestButton} compact={true}>
-            인증 코드 재전송
-          </TextButton>
           <Button
+            mode="outlined"
+            onPress={onPressRequestButton}
+            label="인증 코드 재전송"
+          />
+          <Button
+            label="다음"
             loading={loading}
             mode="contained"
             onPress={onPressNextButton}
-          >
-            다음
-          </Button>
+          />
         </View>
       </RegisterLayout>
     );
@@ -285,14 +286,13 @@ export default function RegisterScreen_2({
         navigation={navigation}
       >
         <Button
+          label="돌아가기"
           loading={loading}
           mode="contained"
-          onPressIn={() => {
+          onPress={() => {
             navigation.navigate("Start");
           }}
-        >
-          돌아가기
-        </Button>
+        />
       </RegisterLayout>
     );
   };

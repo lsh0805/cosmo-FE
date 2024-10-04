@@ -158,9 +158,7 @@ export default function RegisterScreen_3({
           secureTextEntry={true}
           keyboardType="default"
         />
-        <Button mode="contained" onPress={onPressNextButton}>
-          다음
-        </Button>
+        <Button label="다음" mode="contained" onPress={onPressNextButton} />
       </View>
     </RegisterLayout>
   );

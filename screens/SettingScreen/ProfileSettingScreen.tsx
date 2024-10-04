@@ -5,6 +5,7 @@ import { TouchableHighlight } from "react-native-gesture-handler";
 import { Avatar, Text } from "react-native-paper";
 import { Button, TextInput } from "../../components";
 import { SettingStackParamList } from "../../navigation_stack/SettingStack";
+import Toast from "react-native-root-toast";
 
 let profile_img = require("../../assets/images/profile_image.png");
 
@@ -12,6 +13,35 @@ type ProfileSettingProps = NativeStackScreenProps<
   SettingStackParamList,
   "ProfileSetting"
 >;
+
+// Add a Toast on screen.
+const showSaveResultToast = () => {
+  Toast.show("프로필 설정이 저장되었습니다.", {
+    duration: Toast.durations.LONG,
+    position: Toast.positions.TOP,
+    shadow: true,
+    animation: true,
+    hideOnPress: true,
+    delay: 0,
+    onShow: () => {
+      // calls on toast\`s appear animation start
+    },
+    onShown: () => {
+      // calls on toast\`s appear animation end.
+    },
+    onHide: () => {
+      // calls on toast\`s hide animation start.
+    },
+    onHidden: () => {
+      // calls on toast\`s hide animation end.
+    },
+  });
+};
+
+const onPressSaveButton = () => {
+  console.log(1);
+  showSaveResultToast();
+};
 
 export default function ProfileSettingScreen({
   navigation,
@@ -52,19 +82,24 @@ export default function ProfileSettingScreen({
         <View style={styles.section}>
           <View style={styles.section_header}>
             <Text style={styles.section_title}>사용자 이름</Text>
+            <Text style={styles.section_description}>
+              1 ~ 20자 사이 입력 가능
+            </Text>
           </View>
           <View style={{ flexDirection: "row" }}>
             <TextInput
               placeholder="사용자 이름"
               value={"username"}
               error={false}
-              disabled={true}
             />
           </View>
         </View>
         <View style={styles.section}>
           <View style={styles.section_header}>
             <Text style={styles.section_title}>프로필 메시지</Text>
+            <Text style={styles.section_description}>
+              0 ~ 100자 사이 입력 가능
+            </Text>
           </View>
           <View style={{ flexDirection: "row" }}>
             <TextInput
@@ -72,15 +107,16 @@ export default function ProfileSettingScreen({
               value={"username"}
               style={{ height: 200 }}
               error={false}
-              disabled={true}
               multiline={true}
             />
           </View>
         </View>
       </View>
-      <Button textColor="#fff" buttonColor="#00f">
-        저장하기
-      </Button>
+      <Button
+        label="저장하기"
+        style={{ backgroundColor: "#00f" }}
+        onPress={() => onPressSaveButton()}
+      />
     </View>
   );
 }
@@ -98,12 +134,17 @@ const styles = StyleSheet.create({
   },
   section: {},
   section_header: {
-    flexDirection: "row",
+    flexDirection: "column",
     justifyContent: "flex-start",
   },
   section_title: {
     color: "#fff",
     fontSize: 18,
+    fontWeight: "bold",
+  },
+  section_description: {
+    color: "#aaa",
+    fontSize: 14,
     fontWeight: "bold",
   },
   profile_img_edit: {

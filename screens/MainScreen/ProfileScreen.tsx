@@ -4,6 +4,7 @@ import { StyleSheet, View } from "react-native";
 import { Avatar, Text } from "react-native-paper";
 import { Button } from "../../components";
 import { MainStackParamList } from "../../navigation_stack/MainStack";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 let profile_img = require("../../assets/images/profile_image.png");
 
@@ -31,16 +32,19 @@ export default function ProfileScreen({
             </Text>
           </View>
         </View>
-        <View style={styles.user_btn_container}>
-          <Button
-            icon="account-plus"
-            mode="contained"
-            buttonColor="#222"
-            onPress={() => console.log("Pressed")}
-          >
-            친구 추가
-          </Button>
-        </View>
+        <Button
+          icon={
+            <MaterialCommunityIcons
+              name="account-plus"
+              size={18}
+              color="#fff"
+            />
+          }
+          mode="contained"
+          contentType="icon-text"
+          label="친구 추가"
+          onPress={() => console.log("Pressed")}
+        />
         <View style={styles.reputation_container}></View>
       </View>
     </View>

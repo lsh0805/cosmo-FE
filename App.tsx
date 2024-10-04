@@ -1,3 +1,4 @@
+import { AntDesign, Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import {
@@ -7,11 +8,13 @@ import {
 import { registerRootComponent } from "expo";
 import { useFonts } from "expo-font";
 import { IconButton, Provider } from "react-native-paper";
+import { RootSiblingParent } from "react-native-root-siblings";
 import { RegisterProvider } from "./contexts/RegisterProvider";
 import { theme } from "./core/theme";
 import { MainStack, MainStackParamList } from "./navigation_stack/MainStack";
 import { RegisterStack } from "./navigation_stack/RegisterStack";
 import { RootStack } from "./navigation_stack/RootStack";
+import { SettingStack } from "./navigation_stack/SettingStack";
 import { StartScreen } from "./screens";
 import {
   ChattingListScreen,
@@ -19,18 +22,16 @@ import {
   MatchingScreen,
   ProfileScreen,
 } from "./screens/MainScreen";
+import HomeScreen from "./screens/MainScreen/HomeScreen";
 import {
   RegisterScreen_1,
   RegisterScreen_2,
   RegisterScreen_3,
   RegisterScreen_4,
 } from "./screens/RegisterScreen";
-import { AntDesign, Feather, MaterialCommunityIcons } from "@expo/vector-icons";
-import SettingScreen from "./screens/SettingScreen/SettingScreen";
-import HomeScreen from "./screens/MainScreen/HomeScreen";
-import { SettingStack } from "./navigation_stack/SettingStack";
-import ProfileSettingScreen from "./screens/SettingScreen/ProfileSettingScreen";
 import ProfileImageEditScreen from "./screens/SettingScreen/ProfileImageEditScreen";
+import ProfileSettingScreen from "./screens/SettingScreen/ProfileSettingScreen";
+import SettingScreen from "./screens/SettingScreen/SettingScreen";
 
 const Tab = createBottomTabNavigator<MainStackParamList>();
 
@@ -247,27 +248,29 @@ export default function App() {
   }
 
   return (
-    <Provider theme={theme}>
-      <NavigationContainer>
-        <RootStack.Navigator
-          initialRouteName="RegisterStack"
-          screenOptions={{
-            headerShown: false,
-            transitionSpec: {
-              open: TransitionSpecs.FadeInFromBottomAndroidSpec,
-              close: TransitionSpecs.FadeOutToBottomAndroidSpec,
-            },
-            cardStyleInterpolator: CardStyleInterpolators.forFadeFromCenter,
-          }}
-        >
-          <RootStack.Screen
-            name="RegisterStack"
-            component={RegisterStackScreens}
-          />
-          <RootStack.Screen name="MainStack" component={MainStackScreens} />
-        </RootStack.Navigator>
-      </NavigationContainer>
-    </Provider>
+    <RootSiblingParent>
+      <Provider theme={theme}>
+        <NavigationContainer>
+          <RootStack.Navigator
+            initialRouteName="RegisterStack"
+            screenOptions={{
+              headerShown: false,
+              transitionSpec: {
+                open: TransitionSpecs.FadeInFromBottomAndroidSpec,
+                close: TransitionSpecs.FadeOutToBottomAndroidSpec,
+              },
+              cardStyleInterpolator: CardStyleInterpolators.forFadeFromCenter,
+            }}
+          >
+            <RootStack.Screen
+              name="RegisterStack"
+              component={RegisterStackScreens}
+            />
+            <RootStack.Screen name="MainStack" component={MainStackScreens} />
+          </RootStack.Navigator>
+        </NavigationContainer>
+      </Provider>
+    </RootSiblingParent>
   );
 }
 

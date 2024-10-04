@@ -1,14 +1,15 @@
-import * as ImagePicker from "expo-image-picker";
-import { StyleSheet, View } from "react-native";
-import { Image } from "expo-image";
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
-import Text from "./Text";
-import { Button } from "react-native-paper";
-
-let profile_img = require("../assets/images/profile_image.png");
+import { Image } from "expo-image";
+import * as ImagePicker from "expo-image-picker";
+import { useState } from "react";
+import { StyleSheet, View } from "react-native";
+import Button from "./Button";
 
 const ImageSelector = () => {
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
+  const [image, setImage] = useState<string>(
+    "../assets/images/profile_image.png"
+  );
 
   const uploadImage = async () => {
     if (!status?.granted) {
@@ -17,6 +18,18 @@ const ImageSelector = () => {
         return null;
       }
     }
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
   };
 
   return (
@@ -24,46 +37,38 @@ const ImageSelector = () => {
       <View style={styles.image_container}>
         <Image
           style={styles.image}
-          source={profile_img}
+          source={{ uri: image }}
           contentFit="cover"
           transition={1000}
         />
       </View>
       <View style={styles.footer}>
-        <View style={styles.btn_container}>
-          <Button
-            contentStyle={styles.btn}
-            mode="outlined"
-            onPress={() => {
-              console.log("Pressed");
-            }}
-            icon={() => <AntDesign name="picture" size={20} color="#fff" />}
-          >
-            <View style={styles.centerElement}>
-              <Text>저장 공간에서 불러오기</Text>
-            </View>
-          </Button>
-        </View>
-        <View>
-          <Button
-            contentStyle={styles.btn}
-            mode="outlined"
-            textColor="#fa0"
-            onPress={() => {
-              console.log("Pressed");
-            }}
-            icon={() => (
-              <MaterialCommunityIcons
-                name="trash-can-outline"
-                size={20}
-                style={{ alignSelf: "flex-start" }}
-                color="#fff"
-              />
-            )}
-          >
-            프로필 사진 초기화
-          </Button>
-        </View>
+        <Button
+          label="저장 공간에서 불러오기"
+          mode="outlined"
+          contentType="icon-text"
+          style={{ borderColor: "#0ae" }}
+          onPress={() => {
+            uploadImage();
+          }}
+          icon={<AntDesign name="picture" size={20} color="#0ae" />}
+        />
+        <Button
+          label="프로필 사진 초기화"
+          mode="outlined"
+          contentType="icon-text"
+          style={{ borderColor: "#da0" }}
+          onPress={() => {
+            console.log("Pressed");
+          }}
+          icon={
+            <MaterialCommunityIcons
+              name="trash-can-outline"
+              size={20}
+              color="#da0"
+            />
+          }
+        />
       </View>
     </View>
   );
@@ -92,8 +97,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
-  footer: { flex: 1, justifyContent: "flex-end" },
-  btn_container: { flexDirection: "row" },
+  footer: { flex: 1, justifyContent: "flex-end", width: "100%", rowGap: 30 },
   btn: {
     justifyContent: "space-between",
     alignContent: "center",
