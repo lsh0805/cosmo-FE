@@ -334,7 +334,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 24,
     marginTop: 20,
-    fontFamily: "GothicA1",
+    fontFamily: "GothicA1400",
     fontWeight: "bold",
     textAlign: "center",
   },

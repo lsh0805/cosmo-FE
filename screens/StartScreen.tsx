@@ -40,7 +40,6 @@ interface State {
 export default function StartScreen({
   navigation,
 }: StartScreenProps): React.JSX.Element {
-  const { width, height } = useWindowDimensions();
   const [state, setState] = useState<State>({
     language: "한국어",
     email: "",
@@ -118,47 +117,40 @@ export default function StartScreen({
       <BottomSheetModalProvider>
         <StartLinearGradient>
           <View style={styles.layout}>
-            <View
-              style={[
-                styles.container,
-                { width: width * 0.8, height: height * 0.8 },
-              ]}
-            >
-              <View style={[styles.top_container, { width: "100%" }]}>
+            <View style={styles.container}>
+              <View style={styles.top_container}>
                 <View style={styles.logo_container}>
                   <Cosmo width={58} height={58} />
                   <Text style={styles.app_name}>cosmo</Text>
                 </View>
-
-                <View style={styles.language_select_container}>
-                  <Button
-                    icon={
-                      <MaterialCommunityIcons
-                        name="chevron-down"
-                        color={"#fff"}
-                        size={12}
-                      />
-                    }
-                    mode="contained"
-                    contentType="icon-text"
-                    style={{
-                      margin: 0,
-                      backgroundColor: "rgba(0,0,0,0)",
-                    }}
-                    labelStyle={{
-                      fontSize: 15,
-                      flex: 0,
-                    }}
-                    contentStyle={{
-                      flexDirection: "row-reverse",
-                      columnGap: 6,
-                    }}
-                    label={state.language}
-                    onPress={() => handlePresentModalPress()}
-                  />
-                </View>
+                <Button
+                  icon={
+                    <MaterialCommunityIcons
+                      name="chevron-down"
+                      color={"#fff"}
+                      size={12}
+                    />
+                  }
+                  mode="contained"
+                  contentType="icon-with-text"
+                  style={{
+                    margin: 0,
+                    backgroundColor: "rgba(0,0,0,0)",
+                  }}
+                  labelStyle={{
+                    fontSize: 15,
+                    flex: 0,
+                  }}
+                  contentStyle={{
+                    flexDirection: "row-reverse",
+                    width: "auto",
+                    columnGap: 6,
+                  }}
+                  label={state.language}
+                  onPress={() => handlePresentModalPress()}
+                />
               </View>
-              <View style={[styles.auth_container, { width: "100%" }]}>
+              <View style={styles.auth_container}>
                 <TextInput
                   label="이메일 주소"
                   returnKeyType="next"
@@ -190,7 +182,7 @@ export default function StartScreen({
                   style={{ marginTop: 50, width: "100%" }}
                 />
               </View>
-              <View style={(styles.bottom_container, { width: "100%" })}>
+              <View style={styles.bottom_container}>
                 <Button
                   mode="outlined"
                   contentType="text"
@@ -252,17 +244,14 @@ const styles = StyleSheet.create({
   layout: {
     display: "flex",
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  background: {
-    flex: 1,
+    paddingVertical: 22,
+    paddingHorizontal: 44,
   },
   container: {
     display: "flex",
-    backgroundColor: "none",
+    flex: 1,
     flexDirection: "column",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     alignContent: "center",
     alignItems: "center",
   },
@@ -271,6 +260,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignContent: "center",
     alignItems: "center",
+    width: "100%",
+    marginTop: 72,
     flex: 2,
   },
   logo_container: {
@@ -279,7 +270,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     textAlign: "center",
-    flex: 1,
     gap: 12,
   },
   app_name: {
@@ -287,14 +277,6 @@ const styles = StyleSheet.create({
     fontWeight: "light",
     fontSize: 44,
     lineHeight: 44,
-    textAlign: "center",
-    color: "#fff",
-  },
-  language_select_container: {
-    display: "flex",
-    flexDirection: "column",
-    margin: 0,
-    flex: 2,
     textAlign: "center",
     color: "#fff",
   },
@@ -318,23 +300,12 @@ const styles = StyleSheet.create({
   auth_container: {
     display: "flex",
     flexDirection: "column",
-    alignItems: "flex-start",
-    justifyContent: "flex-start",
+    width: "100%",
     flex: 5,
   },
   bottom_container: {
     display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
     flex: 1,
-  },
-  button: {
     width: "100%",
-    marginVertical: 20,
-    backgroundColor: "#ff65c9",
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 5,
-    padding: 10,
   },
 });

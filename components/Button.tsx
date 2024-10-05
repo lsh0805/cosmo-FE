@@ -51,7 +51,7 @@ const Button: React.FC<ButtonProps> = ({
   const getContentStyle = (contentType: ButtonProps["contentType"]) => {
     switch (contentType) {
       case "left-icon-text":
-        return [styles.content, styles.content_icon_text, contentStyle];
+        return [styles.content, styles.content_left_icon_text, contentStyle];
       case "icon-with-text":
         return [styles.content, styles.content_icon_with_text, contentStyle];
       case "icon":
@@ -68,7 +68,7 @@ const Button: React.FC<ButtonProps> = ({
         if (icon === undefined) return null;
         return (
           <View style={getContentStyle(contentType)}>
-            {icon}
+            <View style={styles.content_top_element}>{icon}</View>
             <View style={styles.content_center_element}>
               <Text style={[styles.label_style, labelStyle]}>{label}</Text>
             </View>
@@ -79,9 +79,7 @@ const Button: React.FC<ButtonProps> = ({
         return (
           <View style={getContentStyle(contentType)}>
             {icon}
-            <View style={styles.content_center_element}>
-              <Text style={[styles.label_style, labelStyle]}>{label}</Text>
-            </View>
+            <Text style={[styles.label_style, labelStyle]}>{label}</Text>
           </View>
         );
       case "icon":
@@ -111,7 +109,6 @@ const Button: React.FC<ButtonProps> = ({
 
 const styles = StyleSheet.create({
   btn: {
-    paddingVertical: 14,
     paddingHorizontal: 12,
     justifyContent: "center",
     alignItems: "center",
@@ -129,35 +126,34 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: "rgba(0, 0, 0, 0)",
     borderColor: "#fff",
-    borderWidth: 1,
+    borderWidth: 2,
   },
   content: {
+    width: "100%",
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     alignContent: "center",
-    textAlign: "center",
   },
-  content_icon_text: {},
-  content_icon_with_text: {
+  content_left_icon_text: {
     position: "relative",
     justifyContent: "flex-start",
-    backgroundColor: "#fff",
+    paddingVertical: 12,
+  },
+  content_icon_with_text: {
+    columnGap: 7,
   },
   content_icon: {},
   content_text: {},
+  content_top_element: {},
   content_center_element: {
     position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: [{ translateX: -150 }, { translateY: -50 }],
+    width: "100%",
   },
   label_style: {
     fontSize: 15,
-    fontWeight: "bold",
-    fontFamily: "NotoSansKR",
+    fontFamily: "NotoSansKR700",
     color: "#fff",
-    flex: 1,
     textAlign: "center",
   },
 });

@@ -8,7 +8,6 @@ import {
 import { registerRootComponent } from "expo";
 import { useFonts } from "expo-font";
 import { IconButton, Provider } from "react-native-paper";
-import { RootSiblingParent } from "react-native-root-siblings";
 import { RegisterProvider } from "./contexts/RegisterProvider";
 import { theme } from "./core/theme";
 import { MainStack, MainStackParamList } from "./navigation_stack/MainStack";
@@ -32,6 +31,7 @@ import {
 import ProfileImageEditScreen from "./screens/SettingScreen/ProfileImageEditScreen";
 import ProfileSettingScreen from "./screens/SettingScreen/ProfileSettingScreen";
 import SettingScreen from "./screens/SettingScreen/SettingScreen";
+import { RootSiblingParent } from "react-native-root-siblings";
 
 const Tab = createBottomTabNavigator<MainStackParamList>();
 
@@ -66,7 +66,7 @@ function BottomTabs() {
         headerTitleStyle: {
           color: "#fff",
           backgroundColor: undefined,
-          fontFamily: "NotoSansKR",
+          fontFamily: "NotoSansKR400",
         },
         tabBarStyle: {
           height: 70,
@@ -201,7 +201,7 @@ function SettingStackScreens() {
           headerTitleStyle: {
             color: "#fff",
             backgroundColor: "#000",
-            fontFamily: "NotoSansKR",
+            fontFamily: "NotoSansKR400",
           },
           headerLeft: () => {
             return (
@@ -239,8 +239,24 @@ function SettingStackScreens() {
 
 export default function App() {
   const [fontsLoaded] = useFonts({
-    NotoSansKR: require("./assets/fonts/NotoSansKR-Thin.ttf"),
-    GothicA1: require("./assets/fonts/GothicA1-Regular.ttf"),
+    NotoSansKR100: require("./assets/fonts/NotoSansKR-100.ttf"),
+    NotoSansKR200: require("./assets/fonts/NotoSansKR-200.ttf"),
+    NotoSansKR300: require("./assets/fonts/NotoSansKR-300.ttf"),
+    NotoSansKR400: require("./assets/fonts/NotoSansKR-400.ttf"),
+    NotoSansKR500: require("./assets/fonts/NotoSansKR-500.ttf"),
+    NotoSansKR600: require("./assets/fonts/NotoSansKR-600.ttf"),
+    NotoSansKR700: require("./assets/fonts/NotoSansKR-700.ttf"),
+    NotoSansKR800: require("./assets/fonts/NotoSansKR-800.ttf"),
+    NotoSansKR900: require("./assets/fonts/NotoSansKR-900.ttf"),
+    GothicA1100: require("./assets/fonts/GothicA1-100.ttf"),
+    GothicA1200: require("./assets/fonts/GothicA1-200.ttf"),
+    GothicA1300: require("./assets/fonts/GothicA1-300.ttf"),
+    GothicA1400: require("./assets/fonts/GothicA1-400.ttf"),
+    GothicA1500: require("./assets/fonts/GothicA1-500.ttf"),
+    GothicA1600: require("./assets/fonts/GothicA1-600.ttf"),
+    GothicA1700: require("./assets/fonts/GothicA1-700.ttf"),
+    GothicA1800: require("./assets/fonts/GothicA1-800.ttf"),
+    GothicA1900: require("./assets/fonts/GothicA1-900.ttf"),
   });
 
   if (!fontsLoaded) {

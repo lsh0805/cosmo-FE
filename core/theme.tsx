@@ -4,14 +4,11 @@ import { MD3Type } from "react-native-paper/lib/typescript/types";
 
 const fontConfig: Partial<MD3Type> = {
   fontFamily: Platform.select({
-    web: 'NotoSansKR, GothicA1, "Helvetica Neue", Helvetica, Arial, sans-serif',
+    web: 'NotoSansKR400, GothicA1500, "Helvetica Neue", Helvetica, Arial, sans-serif',
     ios: "System",
-    android: "NotoSansKR",
-    default: "NotoSansKR",
+    android: "NotoSansKR400",
+    default: "NotoSansKR400",
   }),
-  fontWeight: "600",
-  fontSize: 24,
-  letterSpacing: 0.5,
 };
 
 export const theme = {

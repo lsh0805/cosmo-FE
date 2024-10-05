@@ -46,7 +46,7 @@ const ImageSelector = () => {
         <Button
           label="저장 공간에서 불러오기"
           mode="outlined"
-          contentType="icon-text"
+          contentType="left-icon-text"
           style={{ borderColor: "#0ae" }}
           onPress={() => {
             uploadImage();
@@ -56,7 +56,7 @@ const ImageSelector = () => {
         <Button
           label="프로필 사진 초기화"
           mode="outlined"
-          contentType="icon-text"
+          contentType="left-icon-text"
           style={{ borderColor: "#da0" }}
           onPress={() => {
             console.log("Pressed");

@@ -41,7 +41,7 @@ export default function ProfileScreen({
             />
           }
           mode="contained"
-          contentType="icon-text"
+          contentType="icon-with-text"
           label="친구 추가"
           onPress={() => console.log("Pressed")}
         />
@@ -109,10 +109,6 @@ const styles = StyleSheet.create({
     fontWeight: "regular",
     fontSize: 14,
     color: "#fff",
-  },
-  user_btn_container: {
-    display: "flex",
-    flex: 1,
   },
   reputation_container: {
     flex: 7,

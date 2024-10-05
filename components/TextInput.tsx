@@ -24,12 +24,11 @@ interface TextInputProps extends InputProps {
 
 const fontConfig: Partial<MD3Type> = {
   fontFamily: Platform.select({
-    web: 'GothicA1, "Helvetica Neue", Helvetica, Arial, sans-serif',
-    ios: "GothicA1, System",
-    android: "GothicA1",
-    default: "GothicA1",
+    web: 'GothicA1400, "Helvetica Neue", Helvetica, Arial, sans-serif',
+    ios: "GothicA1400, System",
+    android: "GothicA1400",
+    default: "GothicA1400",
   }),
-  fontWeight: "400",
   fontSize: 13,
   letterSpacing: 0.5,
 };
