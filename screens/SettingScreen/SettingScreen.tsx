@@ -3,6 +3,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useEffect } from "react";
 import { StyleSheet, TouchableHighlight, View } from "react-native";
 import { Divider, Text } from "react-native-paper";
+import { MenuItem } from "../../components";
 import { SettingStackParamList } from "../../navigation_stack/SettingStack";
 
 type SettingProps = NativeStackScreenProps<SettingStackParamList, "Setting">;
@@ -34,10 +35,10 @@ const sections: SectionType[] = [
         },
       },
       {
-        label: "계정 설정",
+        label: "보안 설정",
         icon: "account-lock-outline",
         onPress: (navigation: SettingProps["navigation"]) => {
-          navigation.navigate("ProfileSetting");
+          navigation.navigate("AccountSetting");
         },
       },
     ],
@@ -49,14 +50,14 @@ const sections: SectionType[] = [
         label: "테마",
         icon: "theme-light-dark",
         onPress: (navigation: SettingProps["navigation"]) => {
-          navigation.navigate("ProfileSetting");
+          navigation.navigate("ThemeSetting");
         },
       },
       {
         label: "알림",
         icon: "bell-outline",
         onPress: (navigation: SettingProps["navigation"]) => {
-          navigation.navigate("ProfileSetting");
+          navigation.navigate("NotificationSetting");
         },
       },
       {
@@ -90,23 +91,18 @@ export default function SettingScreen({
                 <Text style={styles.section_title}>{header}</Text>
                 {items.map(({ label, icon, onPress }, index) => {
                   return (
-                    <TouchableHighlight
-                      key={index}
-                      activeOpacity={0.8}
-                      underlayColor="#222"
-                      onPress={() => {
-                        onPress(navigation);
-                      }}
-                    >
-                      <View style={styles.btn_content}>
+                    <MenuItem
+                      icon={
                         <MaterialCommunityIcons
                           name={icon}
-                          color={"#fff"}
                           size={28}
+                          color="#fff"
                         />
-                        <Text style={styles.btn_label}>{label}</Text>
-                      </View>
-                    </TouchableHighlight>
+                      }
+                      label={label}
+                      onPress={() => onPress(navigation)}
+                      key={index}
+                    />
                   );
                 })}
               </View>
@@ -140,20 +136,5 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#fff",
     marginBottom: 12,
-  },
-  btn_content: {
-    flexDirection: "row",
-    width: "100%",
-    justifyContent: "flex-start",
-    alignContent: "center",
-    textAlign: "center",
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    gap: 12,
-  },
-  btn_label: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#fff",
   },
 });

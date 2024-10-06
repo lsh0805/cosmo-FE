@@ -7,11 +7,12 @@ import {
   TextStyle,
   View,
   ViewStyle,
+  TouchableHighlightProps,
 } from "react-native";
 import { theme } from "../core/theme";
 import Text from "./Text";
 
-interface ButtonProps {
+interface ButtonProps extends TouchableHighlightProps {
   label?: string;
   mode?: "raw" | "contained" | "outlined" | "text";
   contentType?: "left-icon-text" | "text" | "icon" | "icon-with-text";
@@ -20,7 +21,6 @@ interface ButtonProps {
   contentStyle?: StyleProp<ViewStyle>;
   labelStyle?: StyleProp<TextStyle>;
   loading?: boolean;
-  onPress?: () => void;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -32,7 +32,7 @@ const Button: React.FC<ButtonProps> = ({
   contentStyle,
   labelStyle,
   loading,
-  onPress,
+  ...props
 }) => {
   const getButtonStyle = (mode: ButtonProps["mode"]) => {
     switch (mode) {
@@ -100,7 +100,7 @@ const Button: React.FC<ButtonProps> = ({
       underlayColor={"rgba(80, 80, 80, 0.2)"}
       activeOpacity={0.6}
       style={getButtonStyle(mode)}
-      onPress={onPress}
+      {...props}
     >
       {getContentComponent(contentType)}
     </TouchableHighlight>

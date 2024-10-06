@@ -18,7 +18,7 @@ type ProfileSettingProps = NativeStackScreenProps<
 const showSaveResultToast = () => {
   Toast.show("프로필 설정이 저장되었습니다.", {
     duration: Toast.durations.LONG,
-    position: Toast.positions.TOP,
+    position: 70,
     shadow: true,
     animation: true,
     hideOnPress: true,
@@ -39,7 +39,6 @@ const showSaveResultToast = () => {
 };
 
 const onPressSaveButton = () => {
-  console.log(1);
   showSaveResultToast();
 };
 
@@ -114,7 +113,7 @@ export default function ProfileSettingScreen({
       </View>
       <Button
         label="저장하기"
-        style={{ backgroundColor: "#00f" }}
+        style={{ marginBottom: 30, backgroundColor: "#00f" }}
         onPress={() => onPressSaveButton()}
       />
     </View>
@@ -136,6 +135,7 @@ const styles = StyleSheet.create({
   section_header: {
     flexDirection: "column",
     justifyContent: "flex-start",
+    marginBottom: 7,
   },
   section_title: {
     color: "#fff",
