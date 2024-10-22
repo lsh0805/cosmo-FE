@@ -15,6 +15,8 @@ export const restApiUrl = {
   checkPassword: getApiBaseUrl() + "/auth/check-password",
   signIn: getApiBaseUrl() + "/auth/sign-in",
   signUp: getApiBaseUrl() + "/auth/sign-up",
+  startMatching: getApiBaseUrl() + "/matching/start",
+  removeMatching: getApiBaseUrl() + "/matching/remove",
 };
 
 export const responseError = {
@@ -43,7 +45,7 @@ export const responseError = {
   checkUserName: {
     INVALID_USER_NAME: "INVALID_USER_NAME",
   },
-};
+} as const;
 
 export type CheckVerificationCodeErrors =
   (typeof responseError.checkVerificationCode)[keyof typeof responseError.checkVerificationCode];

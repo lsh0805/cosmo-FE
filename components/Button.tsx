@@ -41,7 +41,7 @@ const Button: React.FC<ButtonProps> = ({
       case "text":
         return [styles.btn, styles.btn_text, style];
       case "raw":
-        return [styles.btn, style];
+        return [style];
       case "contained":
       default:
         return [styles.btn, styles.btn_contained, style];
