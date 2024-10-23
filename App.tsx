@@ -23,6 +23,7 @@ import {
   MatchingScreen,
   ProfileScreen,
   HomeScreen,
+  CreateMatchingScreen,
 } from "./screens/MainScreen";
 import {
   RegisterScreen_1,
@@ -183,6 +184,10 @@ function MainStackScreens() {
       }}
     >
       <MainStack.Screen name="BottomTabs" component={BottomTabs} />
+      <MainStack.Screen
+        name="CreateMatching"
+        component={CreateMatchingScreen}
+      />
       <MainStack.Screen name="SettingStack" component={SettingStackScreens} />
     </MainStack.Navigator>
   );

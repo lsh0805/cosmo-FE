@@ -8,3 +8,4 @@ export { default as ImageSelector } from './ImageSelector';
 export { default as ImageViewer } from './ImageViewer';
 export { default as MenuItem } from './MenuItem';
 export { default as MathcingItem } from './MatchingItem';
+export { default as ConfirmDialog } from './ConfirmDialog';

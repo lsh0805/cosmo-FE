@@ -17,7 +17,7 @@ import Button from "./Button";
 import Text from "./Text";
 import axios from "axios";
 import { restApiUrl } from "../utility/api";
-import { Dialog, Portal, Button as PaperButton } from "react-native-paper";
+import ConfirmDialog from "./ConfirmDialog";
 
 export const MathcingStatus = {
   PROGRESS: "PROGRESS",
@@ -25,19 +25,19 @@ export const MathcingStatus = {
   COMPLETED: "COMPLETED",
 } as const;
 
-export type MathicStatusType =
+export type MatchingStatusType =
   (typeof MathcingStatus)[keyof typeof MathcingStatus];
 
 interface MatchingItemProps extends ViewProps {
   keyword: string;
   createdAt: Date;
   anonymous: boolean;
-  status: MathicStatusType;
+  status: MatchingStatusType;
   style?: StyleProp<ViewStyle>;
   onRemove: () => void;
 }
 
-const MatchingItem: React.FC<MatchingItemProps> = ({
+export const MatchingItem: React.FC<MatchingItemProps> = ({
   keyword,
   createdAt,
   anonymous,
@@ -46,11 +46,8 @@ const MatchingItem: React.FC<MatchingItemProps> = ({
   ...props
 }) => {
   const [visible, setVisible] = React.useState(false);
-
   const showDialog = () => setVisible(true);
-
   const hideDialog = () => setVisible(false);
-
   const spinValue = new Animated.Value(0);
 
   Animated.loop(
@@ -109,6 +106,37 @@ const MatchingItem: React.FC<MatchingItemProps> = ({
     }
   };
 
+  const getDescription = () => {
+    switch (status) {
+      case "COMPLETED":
+        return (
+          <Text style={{ color: "#305cde" }}>채팅방이 개설되었습니다.</Text>
+        );
+      case "EXPIRED":
+        return <Text style={{ color: "#fada5e" }}>매칭이 만료되었습니다.</Text>;
+      default:
+        return undefined;
+    }
+  };
+
+  const getRemoveConfirmDialog = () => {
+    switch (status) {
+      case "PROGRESS":
+        return (
+          <ConfirmDialog
+            title="매칭 삭제"
+            content="진행중인 매칭을 삭제하시겠습니까?"
+            visible={visible}
+            onDismiss={hideDialog}
+            onPressNo={hideDialog}
+            onPressYes={hideDialog}
+          />
+        );
+      default:
+        return undefined;
+    }
+  };
+
   // const removeMatching = async () => {
   //   try {
   //     const response = await axios.post(restApiUrl.removeMatching, {});
@@ -124,10 +152,19 @@ const MatchingItem: React.FC<MatchingItemProps> = ({
   //     setState();
   //   }
   // };
+  const onPressRemoveMatchingBtn = () => {
+    switch (status) {
+      case "PROGRESS":
+        showDialog();
+        break;
+      default:
+        break;
+    }
+  };
 
   return (
     <View
-      style={[styles.item, style, { opacity: status === "PROGRESS" ? 1 : 0.9 }]}
+      style={[styles.item, style, { opacity: status === "PROGRESS" ? 1 : 0.5 }]}
     >
       {getStatusIcon()}
       <View style={styles.content}>
@@ -135,9 +172,12 @@ const MatchingItem: React.FC<MatchingItemProps> = ({
           <Text style={{ color: "#fff", fontSize: 20 }}>{keyword}</Text>
           <Text style={{ color: "#fff" }}>프로필 미공개</Text>
         </View>
-        <Text style={{ color: "#fff" }}>
-          {createdAt.toLocaleDateString()} (6D 12H 10M 29S)
-        </Text>
+        <View>
+          <Text style={{ color: "#fff" }}>
+            {createdAt.toLocaleDateString()} (6D 12H 10M 29S)
+          </Text>
+          {getDescription()}
+        </View>
       </View>
       <View style={styles.right_side}>
         <Button
@@ -153,47 +193,11 @@ const MatchingItem: React.FC<MatchingItemProps> = ({
           contentType="icon"
           mode="raw"
           onPress={() => {
-            showDialog();
+            onPressRemoveMatchingBtn();
           }}
         />
       </View>
-      <Portal>
-        <Dialog visible={visible} onDismiss={hideDialog}>
-          <Dialog.Title>매칭 취소</Dialog.Title>
-          <Dialog.Content>
-            <Text variant="bodyMedium">
-              {"진행 중인 매칭을 취소하시겠습니까?"}
-            </Text>
-          </Dialog.Content>
-          <Dialog.Actions style={{ flexDirection: "row" }}>
-            <PaperButton
-              onPress={hideDialog}
-              style={{
-                borderRadius: 0,
-              }}
-              labelStyle={{
-                fontSize: 14,
-                paddingHorizontal: 20,
-              }}
-            >
-              네
-            </PaperButton>
-            <PaperButton
-              onPress={hideDialog}
-              style={{
-                borderRadius: 0,
-              }}
-              labelStyle={{
-                fontSize: 14,
-                color: "#f20",
-                fontFamily: "NotoSansKR700",
-              }}
-            >
-              아니오
-            </PaperButton>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
+      {getRemoveConfirmDialog()}
     </View>
   );
 };
@@ -207,7 +211,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 6,
     gap: 15,
-    backgroundColor: "#111",
+    backgroundColor: "#222",
     borderRadius: 20,
   },
   content: { width: "100%", flex: 1, gap: 24 },
