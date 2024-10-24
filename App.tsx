@@ -176,6 +176,21 @@ function MainStackScreens() {
       initialRouteName="BottomTabs"
       screenOptions={{
         headerShown: false,
+        cardStyle: {
+          backgroundColor: "#000",
+        },
+        headerStyle: {
+          backgroundColor: "#000",
+          borderBottomWidth: 0,
+          borderBottomColor: "transparent",
+          shadowColor: "transparent",
+          elevation: 0,
+        },
+        headerTitleStyle: {
+          color: "#fff",
+          backgroundColor: "#000",
+          fontFamily: "NotoSansKR400",
+        },
         transitionSpec: {
           open: TransitionSpecs.FadeInFromBottomAndroidSpec,
           close: TransitionSpecs.FadeOutToBottomAndroidSpec,
