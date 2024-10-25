@@ -12,6 +12,7 @@ import ChattingItem from "../../components/ChattingItem";
 import { SafeAreaView } from "react-native-safe-area-context";
 import axios from "axios";
 import { restApiUrl } from "../../utility/api";
+import { MaterialIcons } from "@expo/vector-icons";
 
 type ChattingListProps = NativeStackScreenProps<
   MainStackParamList,
@@ -47,8 +48,9 @@ export default function ChattingListScreen({
 
   return (
     <SafeAreaView>
-      <View style={styles.find_field}>
-        <TextInput />
+      <View style={styles.search_field}>
+        <TextInput style={styles.search_input} />
+        <MaterialIcons name="search" size={14} />
       </View>
       <ScrollView>
         <View style={styles.item_container}>
@@ -73,7 +75,15 @@ export default function ChattingListScreen({
 }
 
 const styles = StyleSheet.create({
-  find_field: {},
+  search_field: {
+    flexDirection: "column",
+    justifyContent: "space-between",
+    borderRadius: 22,
+    flex: 1,
+  },
+  search_input: {
+    flex: 9,
+  },
   item_container: {
     gap: 54,
   },
