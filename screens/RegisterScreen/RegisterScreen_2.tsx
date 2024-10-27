@@ -260,17 +260,16 @@ export default function RegisterScreen_2({
             )}
           />
           {getStatusMessage()}
+          <Button mode="outlined" onPress={onPressRequestButton}>
+            인증 코드 재전송
+          </Button>
           <Button
-            mode="outlined"
-            onPress={onPressRequestButton}
-            label="인증 코드 재전송"
-          />
-          <Button
-            label="다음"
             loading={loading}
             mode="contained"
             onPress={onPressNextButton}
-          />
+          >
+            다음
+          </Button>
         </View>
       </RegisterLayout>
     );
@@ -286,13 +285,14 @@ export default function RegisterScreen_2({
         navigation={navigation}
       >
         <Button
-          label="돌아가기"
           loading={loading}
           mode="contained"
           onPress={() => {
             navigation.navigate("Start");
           }}
-        />
+        >
+          돌아가기
+        </Button>
       </RegisterLayout>
     );
   };

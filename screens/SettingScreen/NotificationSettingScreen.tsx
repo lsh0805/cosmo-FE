@@ -1,16 +1,7 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import * as React from "react";
 import { StyleSheet, View } from "react-native";
-import {
-  Button as PaperButton,
-  Dialog,
-  Portal,
-  RadioButton,
-  Switch,
-  Text,
-  Divider,
-} from "react-native-paper";
-import { Button, TextInput } from "../../components";
+import { Divider, Switch, Text } from "react-native-paper";
 import { SettingStackParamList } from "../../navigation_stack/SettingStack";
 
 type NottificationSettingProps = NativeStackScreenProps<
@@ -118,36 +109,6 @@ export default function NotificationSettingScreen({
                   setNotificationState({
                     ...notificationState,
                     noti_catch_matching: value,
-                  })
-                }
-              />
-            </View>
-          </View>
-          <Divider style={{ borderWidth: 1 }} />
-          <View style={styles.item}>
-            <View style={styles.item_header}>
-              <Text style={styles.item_label}>내 게시글 새 댓글 알림</Text>
-              <Switch
-                value={notificationState.noti_post_new_comment}
-                onValueChange={(value: boolean) =>
-                  setNotificationState({
-                    ...notificationState,
-                    noti_post_new_comment: value,
-                  })
-                }
-              />
-            </View>
-          </View>
-          <Divider style={{ borderWidth: 1 }} />
-          <View style={styles.item}>
-            <View style={styles.item_header}>
-              <Text style={styles.item_label}>내 게시글 좋아요 알림</Text>
-              <Switch
-                value={notificationState.noti_post_like}
-                onValueChange={(value: boolean) =>
-                  setNotificationState({
-                    ...notificationState,
-                    noti_post_like: value,
                   })
                 }
               />

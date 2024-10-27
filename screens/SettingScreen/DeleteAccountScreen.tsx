@@ -40,10 +40,11 @@ export default function DeleteAccountScreen({
         </View>
       </View>
       <Button
-        label="계정 탈퇴하기"
         style={{ marginBottom: 30, backgroundColor: "#f20" }}
         onPress={() => showDialog()}
-      />
+      >
+        계정 탈퇴하기
+      </Button>
 
       <Portal>
         <Dialog visible={visible} onDismiss={hideDialog}>

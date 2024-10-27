@@ -1,30 +1,30 @@
 import { IconProps } from "@expo/vector-icons/build/createIconSet";
-import { TouchableHighlight } from "@gorhom/bottom-sheet";
-import React, { ReactElement } from "react";
+import * as React from "react";
 import {
+  Animated,
+  Platform,
   StyleProp,
   StyleSheet,
   TextStyle,
   View,
   ViewStyle,
-  TouchableHighlightProps,
 } from "react-native";
+import { TouchableRipple, TouchableRippleProps } from "react-native-paper";
 import { theme } from "../core/theme";
 import Text from "./Text";
 
-interface ButtonProps extends TouchableHighlightProps {
-  label?: string;
+interface ButtonProps extends TouchableRippleProps {
   mode?: "raw" | "contained" | "outlined" | "text";
   contentType?: "left-icon-text" | "text" | "icon" | "icon-with-text";
-  icon?: ReactElement<IconProps<string>>;
+  icon?: React.ReactElement<IconProps<string>>;
   style?: StyleProp<ViewStyle>;
   contentStyle?: StyleProp<ViewStyle>;
   labelStyle?: StyleProp<TextStyle>;
   loading?: boolean;
+  children: React.ReactNode;
 }
 
 const Button: React.FC<ButtonProps> = ({
-  label,
   mode,
   contentType,
   icon,
@@ -32,8 +32,42 @@ const Button: React.FC<ButtonProps> = ({
   contentStyle,
   labelStyle,
   loading,
+  children,
   ...props
 }) => {
+  const initialElevation = 1;
+  const activeElevation = 2;
+
+  const { current: elevation } = React.useRef<Animated.Value>(
+    new Animated.Value(initialElevation)
+  );
+
+  React.useEffect(() => {
+    elevation.setValue(initialElevation);
+  }, [true, elevation, initialElevation]);
+
+  const handlePressIn = () => {
+    const scale = 3;
+    Animated.timing(elevation, {
+      toValue: activeElevation,
+      duration: 200 * scale,
+      useNativeDriver:
+        Platform.OS === "web" ||
+        Platform.constants.reactNativeVersion.minor <= 72,
+    }).start();
+  };
+
+  const handlePressOut = () => {
+    const scale = 3;
+    Animated.timing(elevation, {
+      toValue: initialElevation,
+      duration: 150 * scale,
+      useNativeDriver:
+        Platform.OS === "web" ||
+        Platform.constants.reactNativeVersion.minor <= 72,
+    }).start();
+  };
+
   const getButtonStyle = (mode: ButtonProps["mode"]) => {
     switch (mode) {
       case "outlined":
@@ -70,7 +104,7 @@ const Button: React.FC<ButtonProps> = ({
           <View style={getContentStyle(contentType)}>
             <View style={styles.content_top_element}>{icon}</View>
             <View style={styles.content_center_element}>
-              <Text style={[styles.label_style, labelStyle]}>{label}</Text>
+              <Text style={[styles.label_style, labelStyle]}>{children}</Text>
             </View>
           </View>
         );
@@ -79,7 +113,7 @@ const Button: React.FC<ButtonProps> = ({
         return (
           <View style={getContentStyle(contentType)}>
             {icon}
-            <Text style={[styles.label_style, labelStyle]}>{label}</Text>
+            <Text style={[styles.label_style, labelStyle]}>{children}</Text>
           </View>
         );
       case "icon":
@@ -89,26 +123,26 @@ const Button: React.FC<ButtonProps> = ({
       default:
         return (
           <View style={getContentStyle(contentType)}>
-            <Text style={[styles.label_style, labelStyle]}>{label}</Text>
+            <Text style={[styles.label_style, labelStyle]}>{children}</Text>
           </View>
         );
     }
   };
 
   return (
-    <TouchableHighlight
-      underlayColor={"rgba(80, 80, 80, 0.2)"}
-      activeOpacity={0.6}
+    <TouchableRipple
       style={getButtonStyle(mode)}
-      {...props}
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
     >
       {getContentComponent(contentType)}
-    </TouchableHighlight>
+    </TouchableRipple>
   );
 };
 
 const styles = StyleSheet.create({
   btn: {
+    paddingVertical: 12,
     paddingHorizontal: 12,
     justifyContent: "center",
     alignItems: "center",
@@ -138,7 +172,6 @@ const styles = StyleSheet.create({
   content_left_icon_text: {
     position: "relative",
     justifyContent: "flex-start",
-    paddingVertical: 12,
   },
   content_icon_with_text: {
     columnGap: 7,
@@ -152,7 +185,7 @@ const styles = StyleSheet.create({
   },
   label_style: {
     fontSize: 15,
-    fontFamily: "NotoSansKR700",
+    fontFamily: "GothicA1700",
     color: "#fff",
     textAlign: "center",
   },

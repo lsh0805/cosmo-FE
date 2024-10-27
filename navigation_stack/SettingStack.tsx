@@ -4,6 +4,8 @@ export type SettingStackParamList = {
   Setting: undefined;
   ProfileSetting: undefined;
   ProfileImageEdit: undefined;
+  ProfileNameEdit: undefined;
+  ProfileMessageEdit: undefined;
   AccountSetting: undefined;
   PasswordReset: undefined;
   DeleteAccount: undefined;

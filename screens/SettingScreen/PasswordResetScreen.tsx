@@ -54,10 +54,11 @@ export default function PasswordResetScreen({
         </View>
       </View>
       <Button
-        label="비밀번호 변경하기"
         style={{ marginBottom: 30, backgroundColor: "#00f" }}
         onPress={() => {}}
-      />
+      >
+        비밀번호 변경하기
+      </Button>
     </View>
   );
 }

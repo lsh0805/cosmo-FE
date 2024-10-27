@@ -161,11 +161,12 @@ export default function RegisterScreen_4({
         </View>
         <View style={styles.center_row_3}>
           <Button
-            label="가입하기"
             loading={state.loading}
             mode="contained"
             onPress={onPressNextButton}
-          />
+          >
+            가입하기
+          </Button>
         </View>
       </View>
     </RegisterLayout>

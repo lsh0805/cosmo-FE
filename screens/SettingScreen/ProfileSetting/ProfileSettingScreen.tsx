@@ -1,13 +1,18 @@
+import { useState } from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { StyleSheet, TouchableWithoutFeedback, View } from "react-native";
-import { TouchableHighlight } from "react-native-gesture-handler";
+import {
+  StyleSheet,
+  TouchableWithoutFeedback,
+  TouchableHighlight,
+  View,
+} from "react-native";
 import { Avatar, Text } from "react-native-paper";
-import { Button, TextInput } from "../../components";
-import { SettingStackParamList } from "../../navigation_stack/SettingStack";
+import { Button, TextInput } from "../../../components";
+import { SettingStackParamList } from "../../../navigation_stack/SettingStack";
 import Toast from "react-native-root-toast";
 
-let profile_img = require("../../assets/images/profile_image.png");
+let profile_img = require("../../../assets/images/profile_image.png");
 
 type ProfileSettingProps = NativeStackScreenProps<
   SettingStackParamList,
@@ -45,6 +50,49 @@ const onPressSaveButton = () => {
 export default function ProfileSettingScreen({
   navigation,
 }: ProfileSettingProps) {
+  const [state, setState] = useState<{
+    profile_image: string;
+    username: string;
+    profile_message: string;
+  }>({
+    profile_image: "",
+    username: "",
+    profile_message: "",
+  });
+  // const uploadProfileImage = async (image: string) => {
+  //   const body = new FormData();
+  //   let file = {
+  //     uri: image.uri,
+  //     type: mime.getType(image.uri), // image/jpeg
+  //     name: image.name,
+  //   };
+  //   body.append("images", file);
+
+  //   if (TOKEN === undefined);
+  //   {
+  //     TOKEN = await getToken();
+  //   }
+
+  //   axios.defaults.headers.common[
+  //     "Authorization"
+  //   ] = `Bearer ${TOKEN.accessToken}`;
+
+  //   axios
+  //     .post(`서버에 저장할 URL`, body, {
+  //       headers: {
+  //         "Content-Type": `multipart/form-data`,
+  //       },
+  //     })
+  //     .then((response) => {
+  //       console.log("사진보내기 응답");
+  //       console.log(response.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log("사진보내기 에러");
+  //       console.log(err.response);
+  //     });
+  // };
+
   return (
     <View style={styles.layout}>
       <View style={styles.section_container}>
@@ -81,14 +129,12 @@ export default function ProfileSettingScreen({
         <View style={styles.section}>
           <View style={styles.section_header}>
             <Text style={styles.section_title}>사용자 이름</Text>
-            <Text style={styles.section_description}>
-              1 ~ 20자 사이 입력 가능
-            </Text>
           </View>
           <View style={{ flexDirection: "row" }}>
             <TextInput
               placeholder="사용자 이름"
-              value={"username"}
+              value={state.username}
+              onPress={() => navigation.navigate("ProfileNameEdit")}
               error={false}
             />
           </View>
@@ -96,26 +142,19 @@ export default function ProfileSettingScreen({
         <View style={styles.section}>
           <View style={styles.section_header}>
             <Text style={styles.section_title}>프로필 메시지</Text>
-            <Text style={styles.section_description}>
-              0 ~ 100자 사이 입력 가능
-            </Text>
           </View>
           <View style={{ flexDirection: "row" }}>
             <TextInput
-              placeholder="사용자 이름"
-              value={"username"}
+              placeholder="프로필 메시지"
+              value={state.profile_message}
               style={{ height: 200 }}
+              onPress={() => navigation.navigate("ProfileMessageEdit")}
               error={false}
               multiline={true}
             />
           </View>
         </View>
       </View>
-      <Button
-        label="저장하기"
-        style={{ marginBottom: 30, backgroundColor: "#00f" }}
-        onPress={() => onPressSaveButton()}
-      />
     </View>
   );
 }

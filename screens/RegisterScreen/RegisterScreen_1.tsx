@@ -72,11 +72,9 @@ export default function RegisterScreen_1({
           textContentType="emailAddress"
           keyboardType="email-address"
         />
-        <Button
-          mode="contained"
-          onPress={onPressNextButton}
-          label="인증 코드 발송"
-        />
+        <Button mode="contained" onPress={onPressNextButton}>
+          인증 코드 발송
+        </Button>
       </View>
     </RegisterLayout>
   );

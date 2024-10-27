@@ -6,7 +6,7 @@ const fontConfig: Partial<MD3Type> = {
   fontFamily: Platform.select({
     web: 'NotoSansKR400, GothicA1400, "Helvetica Neue", Helvetica, Arial, sans-serif',
     ios: "System",
-    android: "GothicA1400",
+    android: "GothicA1700",
     default: "NotoSansKR400",
   }),
 };

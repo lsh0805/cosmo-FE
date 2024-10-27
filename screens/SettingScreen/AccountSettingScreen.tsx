@@ -95,7 +95,6 @@ export default function AccountSettingScreen({
 const styles = StyleSheet.create({
   layout: {
     flex: 1,
-    paddingHorizontal: 10,
     paddingVertical: 10,
     flexDirection: "column",
     justifyContent: "space-between",
@@ -104,6 +103,7 @@ const styles = StyleSheet.create({
     rowGap: 16,
   },
   section_header: {
+    marginLeft: 14,
     flexDirection: "column",
     justifyContent: "flex-start",
     marginBottom: 7,

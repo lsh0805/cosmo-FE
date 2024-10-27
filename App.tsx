@@ -40,6 +40,8 @@ import {
   DeleteAccountScreen,
   ThemeSettingScreen,
   NotificationSettingScreen,
+  ProfileNameEditScreen,
+  ProfileMessageEditScreen,
 } from "./screens/SettingScreen";
 
 const Tab = createBottomTabNavigator<MainStackParamList>();
@@ -262,6 +264,14 @@ function SettingStackScreens() {
         component={ProfileImageEditScreen}
       />
       <SettingStack.Screen
+        name="ProfileNameEdit"
+        component={ProfileNameEditScreen}
+      />
+      <SettingStack.Screen
+        name="ProfileMessageEdit"
+        component={ProfileMessageEditScreen}
+      />
+      <SettingStack.Screen
         name="AccountSetting"
         component={AccountSettingScreen}
       />
@@ -302,7 +312,7 @@ export default function App() {
         <Provider theme={theme}>
           <NavigationContainer>
             <RootStack.Navigator
-              initialRouteName="RegisterStack"
+              initialRouteName="MainStack"
               screenOptions={{
                 headerShown: false,
                 transitionSpec: {
